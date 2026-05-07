@@ -1,0 +1,36 @@
+{
+  "manifest_version": 3,
+  "name": "Focus Timer — Pomodoro Productivity Timer",
+  "short_name": "Focus Timer",
+  "description": "Floating Pomodoro timer on every tab. 25/5 min focus cycles, custom themes, study stats. Stay focused without switching windows.",
+  "version": "1.0.0",
+  "author": "Iker G.",
+  "permissions": ["storage", "scripting", "tabs", "notifications"],
+  "host_permissions": ["http://*/*", "https://*/*"],
+  "icons": {
+    "16":  "icons/icon16.png",
+    "32":  "icons/icon32.png",
+    "48":  "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Focus Timer",
+    "default_icon": {
+      "16":  "icons/icon16.png",
+      "32":  "icons/icon32.png",
+      "48":  "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["http://*/*", "https://*/*"],
+      "js": ["content.js"],
+      "run_at": "document_end"
+    }
+  ]
+}
