@@ -563,31 +563,7 @@
     pai.style.display = isRunning ? 'block' : 'none';
     inf.textContent   = T('sessionFmt')(session, completed);
 
-    if (isRunning && tl === 0) {
-      if (mode === 'work') {
-        addStudyMinutes(Math.round(WORK / 60));
-        completed++; session++;
-        if (longBreakEnabled && completed % 4 === 0) {
-          isLongBreak = true;
-          chrome.runtime.sendMessage({ type: 'pomo_notify', title: T('notifyLongStart'), body: T('notifyLongStartBody') });
-        } else {
-          isLongBreak = false;
-          chrome.runtime.sendMessage({ type: 'pomo_notify', title: T('notifyWorkTitle'), body: T('notifyWorkBody') });
-        }
-      } else {
-        var wasLong = isLongBreak;
-        isLongBreak = false;
-        chrome.runtime.sendMessage({ type: 'pomo_notify',
-          title: wasLong ? T('notifyLongEnd')  : T('notifyBreakTitle'),
-          body:  wasLong ? T('notifyLongEndBody') : T('notifyBreakBody') });
-      }
-      playAlarm();
-      mode = mode === 'work' ? 'break' : 'work';
-      offset = 0; startTime = Date.now();
-      w.classList.add('pop');
-      setTimeout(function() { w.classList.remove('pop'); }, 400);
-      saveState();
-    }
+    if (isRunning && tl === 0) completeSession();
 
     ratingBar.style.display = (!ratingDismissed && completed >= RATING_THRESHOLD) ? 'flex' : 'none';
     var blocked = isBlocked();
@@ -613,6 +589,41 @@
     startTime = s.startTime || null;
     offset      = s.offset      || 0;
     isLongBreak = !!s.isLongBreak;
+  }
+
+  function saveSettings() {
+    chrome.storage.local.set({ pomoSettings: {
+      work: Math.round(WORK / 60), break: Math.round(BREAK / 60),
+      theme: currentTheme, size: currentSize, lang: lang,
+      alarm: alarmEnabled, longBreak: longBreakEnabled,
+      longBreakDur: Math.round(LONG_BREAK / 60)
+    }});
+  }
+
+  function completeSession() {
+    if (mode === 'work') {
+      addStudyMinutes(Math.round(WORK / 60));
+      completed++; session++;
+      if (longBreakEnabled && completed % 4 === 0) {
+        isLongBreak = true;
+        chrome.runtime.sendMessage({ type: 'pomo_notify', title: T('notifyLongStart'), body: T('notifyLongStartBody') });
+      } else {
+        isLongBreak = false;
+        chrome.runtime.sendMessage({ type: 'pomo_notify', title: T('notifyWorkTitle'), body: T('notifyWorkBody') });
+      }
+    } else {
+      var wasLong = isLongBreak;
+      isLongBreak = false;
+      chrome.runtime.sendMessage({ type: 'pomo_notify',
+        title: wasLong ? T('notifyLongEnd')  : T('notifyBreakTitle'),
+        body:  wasLong ? T('notifyLongEndBody') : T('notifyBreakBody') });
+    }
+    playAlarm();
+    mode = mode === 'work' ? 'break' : 'work';
+    offset = 0; startTime = Date.now();
+    w.classList.add('pop');
+    setTimeout(function() { w.classList.remove('pop'); }, 400);
+    saveState();
   }
 
   // ── Panel de ajustes ───────────────────────────────────────────────────────
@@ -671,7 +682,7 @@
     sw.addEventListener('click', function(e) {
       e.stopPropagation();
       applyTheme(parseInt(sw.dataset.t));
-      chrome.storage.local.set({ pomoSettings: { work: Math.round(WORK/60), break: Math.round(BREAK/60), theme: currentTheme, size: currentSize, lang: lang, alarm: alarmEnabled, longBreak: longBreakEnabled, longBreakDur: Math.round(LONG_BREAK/60) } });
+      saveSettings();
     });
   });
 
@@ -679,33 +690,33 @@
     b.addEventListener('click', function(e) {
       e.stopPropagation();
       applySize(parseInt(b.dataset.sz));
-      chrome.storage.local.set({ pomoSettings: { work: Math.round(WORK/60), break: Math.round(BREAK/60), theme: currentTheme, size: currentSize, lang: lang, alarm: alarmEnabled, longBreak: longBreakEnabled, longBreakDur: Math.round(LONG_BREAK/60) } });
+      saveSettings();
     });
   });
 
   sLangEs.addEventListener('click', function(e) {
     e.stopPropagation();
     applyLang('es');
-    chrome.storage.local.set({ pomoSettings: { work: Math.round(WORK/60), break: Math.round(BREAK/60), theme: currentTheme, size: currentSize, lang: 'es', alarm: alarmEnabled, longBreak: longBreakEnabled, longBreakDur: Math.round(LONG_BREAK/60) } });
+    saveSettings();
   });
 
   sLangEn.addEventListener('click', function(e) {
     e.stopPropagation();
     applyLang('en');
-    chrome.storage.local.set({ pomoSettings: { work: Math.round(WORK/60), break: Math.round(BREAK/60), theme: currentTheme, size: currentSize, lang: 'en', alarm: alarmEnabled, longBreak: longBreakEnabled, longBreakDur: Math.round(LONG_BREAK/60) } });
+    saveSettings();
   });
 
   alarmChk.addEventListener('change', function(e) {
     e.stopPropagation();
     alarmEnabled = alarmChk.checked;
-    chrome.storage.local.set({ pomoSettings: { work: Math.round(WORK/60), break: Math.round(BREAK/60), theme: currentTheme, size: currentSize, lang: lang, alarm: alarmEnabled, longBreak: longBreakEnabled, longBreakDur: Math.round(LONG_BREAK/60) } });
+    saveSettings();
   });
 
   sLongChk.addEventListener('change', function(e) {
     e.stopPropagation();
     longBreakEnabled = sLongChk.checked;
     sLongRow.style.display = longBreakEnabled ? '' : 'none';
-    chrome.storage.local.set({ pomoSettings: { work: Math.round(WORK/60), break: Math.round(BREAK/60), theme: currentTheme, size: currentSize, lang: lang, alarm: alarmEnabled, longBreak: longBreakEnabled, longBreakDur: Math.round(LONG_BREAK/60) } });
+    saveSettings();
   });
 
   function addToBlacklist() {
@@ -743,7 +754,7 @@
     BREAK      = nb * 60;
     LONG_BREAK = nl * 60;
     longBreakEnabled = sLongChk.checked;
-    chrome.storage.local.set({ pomoSettings: { work: nw, break: nb, theme: currentTheme, size: currentSize, lang: lang, alarm: alarmEnabled, longBreak: longBreakEnabled, longBreakDur: nl } });
+    saveSettings();
     saveState();
     closeSettings();
     render();

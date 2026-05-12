@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Policy — Focus Timer</title>
+  <meta name="description" content="Focus Timer privacy policy. No data collection, no tracking, no servers.">
+  <link rel="canonical" href="https://ikerdas13.github.io/focus-timer/privacy">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --red:   #ff6b6b;
+      --green: #4dd9ac;
+      --bg:    #0f0f1a;
+      --bg2:   #17172b;
+      --bg3:   #1e1e32;
+      --text:  #ffffff;
+      --muted: rgba(255,255,255,.45);
+      --dim:   rgba(255,255,255,.08);
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    a { color: var(--red); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ── Nav ── */
+    nav {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 40px;
+      border-bottom: 1px solid var(--dim);
+      position: sticky; top: 0; background: rgba(15,15,26,.92);
+      backdrop-filter: blur(12px); z-index: 100;
+    }
+    .nav-brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 15px; color: var(--text); }
+    .nav-link { font-size: 13px; color: var(--muted); transition: color .2s; }
+    .nav-link:hover { color: var(--text); text-decoration: none; }
+
+    /* ── Content ── */
+    .page {
+      max-width: 720px; margin: 0 auto;
+      padding: 72px 24px 96px;
+    }
+
+    .page-label {
+      font-size: 11px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase;
+      color: var(--red); margin-bottom: 14px;
+    }
+    h1 {
+      font-size: clamp(28px, 5vw, 42px); font-weight: 800; letter-spacing: -.5px;
+      margin-bottom: 10px;
+    }
+    .updated {
+      font-size: 13px; color: var(--muted); margin-bottom: 48px;
+    }
+
+    .card {
+      background: var(--bg2); border: 1px solid var(--dim);
+      border-radius: 20px; padding: 36px 40px;
+    }
+
+    .card p {
+      font-size: 15px; color: rgba(255,255,255,.75); line-height: 1.7; margin-bottom: 20px;
+    }
+    .card p:last-of-type { margin-bottom: 0; }
+
+    .card h2 {
+      font-size: 16px; font-weight: 700; color: var(--text);
+      margin: 32px 0 14px; letter-spacing: -.2px;
+    }
+    .card h2:first-child { margin-top: 0; }
+
+    .highlight {
+      background: rgba(255,107,107,.07); border: 1px solid rgba(255,107,107,.18);
+      border-radius: 10px; padding: 14px 18px; margin-bottom: 24px;
+      font-size: 14px; color: rgba(255,255,255,.8); line-height: 1.6;
+      display: flex; gap: 12px; align-items: flex-start;
+    }
+    .highlight-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+
+    table {
+      width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 13px;
+    }
+    th {
+      text-align: left; color: var(--muted); font-weight: 600;
+      padding: 8px 0; border-bottom: 1px solid var(--dim);
+    }
+    td {
+      padding: 10px 0; border-bottom: 1px solid var(--dim);
+      color: rgba(255,255,255,.65); vertical-align: top;
+    }
+    td:first-child {
+      font-family: monospace; font-size: 12px;
+      color: var(--red); padding-right: 24px; white-space: nowrap; width: 1%;
+    }
+
+    .contact {
+      margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--dim);
+      font-size: 13px; color: var(--muted);
+    }
+    .contact a { color: var(--red); }
+
+    /* ── Footer ── */
+    footer {
+      border-top: 1px solid var(--dim);
+      padding: 28px 40px;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 12px;
+      font-size: 13px; color: rgba(255,255,255,.3);
+    }
+    footer a { color: rgba(255,255,255,.4); transition: color .2s; }
+    footer a:hover { color: var(--text); }
+
+    @media (max-width: 600px) {
+      nav { padding: 14px 20px; }
+      .card { padding: 24px; }
+      footer { flex-direction: column; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="/" class="nav-brand">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff6b6b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      Focus Timer
+    </a>
+    <a href="/" class="nav-link">← Back to home</a>
+  </nav>
+
+  <div class="page">
+    <div class="page-label">Legal</div>
+    <h1>Privacy Policy</h1>
+    <p class="updated">Last updated: May 2026</p>
+
+    <div class="card">
+
+      <div class="highlight">
+        <div class="highlight-icon">🔒</div>
+        <div>Focus Timer does <strong>not collect, transmit, or share any personal data</strong>. Everything stays on your device.</div>
+      </div>
+
+      <h2>What we store</h2>
+      <p>All data created by this extension is saved exclusively in your local browser using <code style="color:var(--red);font-size:12px;background:rgba(255,107,107,.08);padding:2px 6px;border-radius:4px">chrome.storage.local</code>. This data never leaves your device and is not accessible to the developer or any third party.</p>
+
+      <table>
+        <tr><th>Key</th><th>What it contains</th></tr>
+        <tr><td>pomoState</td><td>Timer mode, elapsed time, session count, long-break flag</td></tr>
+        <tr><td>pomoSettings</td><td>Work/break durations, theme, size, language, alarm, long break</td></tr>
+        <tr><td>pomoBg</td><td>Custom background image (compressed JPEG, max 640 px)</td></tr>
+        <tr><td>pomoStats</td><td>Daily study minutes (date-keyed, auto-pruned after 1 year)</td></tr>
+        <tr><td>pomoVisible</td><td>Whether the widget is shown or hidden</td></tr>
+        <tr><td>pomoPosition</td><td>Widget corner (top-left, top-right, bottom-left, bottom-right)</td></tr>
+        <tr><td>pomoBlacklist</td><td>List of domains blocked during work sessions</td></tr>
+        <tr><td>pomoRatingDismissed</td><td>Whether the rating prompt has been dismissed</td></tr>
+      </table>
+
+      <h2>No analytics, no tracking</h2>
+      <p>Focus Timer does not use any analytics service, tracking pixel, or external API. There are no servers. The extension runs entirely inside your browser.</p>
+
+      <h2>Permissions</h2>
+      <p>The extension requests the following Chrome permissions:</p>
+      <table>
+        <tr><th>Permission</th><th>Why it's needed</th></tr>
+        <tr><td>storage</td><td>Save your settings and study statistics locally</td></tr>
+        <tr><td>scripting</td><td>Inject the floating timer widget into web pages</td></tr>
+        <tr><td>tabs</td><td>Sync the timer across all open tabs</td></tr>
+        <tr><td>notifications</td><td>Show desktop alerts when a session ends</td></tr>
+        <tr><td>host_permissions</td><td>Required to run the content script on http/https pages</td></tr>
+      </table>
+
+      <h2>Data deletion</h2>
+      <p>You can delete all stored data at any time by going to <strong>chrome://extensions</strong>, finding Focus Timer, and clicking <strong>Remove</strong>. Alternatively, use Chrome's "Clear browsing data" to wipe extension storage.</p>
+
+      <div class="contact">
+        Questions? Contact: <a href="mailto:ikergg1307@gmail.com">ikergg1307@gmail.com</a>
+      </div>
+
+    </div>
+  </div>
+
+  <footer>
+    <div>© 2026 Focus Timer · Designed by <strong style="color:rgba(255,255,255,.6)">Iker G.</strong></div>
+    <div style="display:flex;gap:24px">
+      <a href="https://chromewebstore.google.com/detail/focus-timer-%E2%80%94-pomodoro-pr/gdidicppaicpkamdlnljeakdefkknikh">Chrome Web Store</a>
+      <a href="privacy">Privacy Policy</a>
+      <a href="https://github.com/Ikerdas13/focus-timer">GitHub</a>
+    </div>
+  </footer>
+
+</body>
+</html>
