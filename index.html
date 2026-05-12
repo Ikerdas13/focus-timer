@@ -276,10 +276,75 @@
     footer a { color: rgba(255,255,255,.4); transition: color .2s; }
     footer a:hover { color: var(--text); }
 
+    /* ── Browser mockup ── */
+    .preview { margin: 72px auto 0; max-width: 880px; padding: 0 24px; }
+    .browser-frame {
+      border-radius: 14px; overflow: hidden;
+      box-shadow: 0 48px 120px rgba(0,0,0,.85), 0 0 0 1px rgba(255,255,255,.07);
+    }
+    .browser-bar {
+      background: #0d0d18; padding: 11px 16px;
+      display: flex; align-items: center; gap: 10px;
+      border-bottom: 1px solid rgba(255,255,255,.04);
+    }
+    .browser-dots { display: flex; gap: 6px; flex-shrink: 0; }
+    .browser-dots span { width: 12px; height: 12px; border-radius: 50%; display: block; }
+    .browser-url {
+      flex: 1; background: rgba(255,255,255,.05); border-radius: 6px;
+      padding: 5px 12px; font-size: 12px; color: rgba(255,255,255,.3);
+      display: flex; align-items: center; gap: 6px; min-width: 0;
+      overflow: hidden; white-space: nowrap;
+    }
+    .browser-vp {
+      position: relative; height: 390px; overflow: hidden; display: flex;
+      background: #111120;
+    }
+    .fake-pg { display: flex; width: 100%; height: 100%; }
+    .fake-nav {
+      width: 196px; flex-shrink: 0; background: #0d0d1b;
+      border-right: 1px solid rgba(255,255,255,.04); padding: 22px 14px;
+    }
+    .fake-art { flex: 1; padding: 28px 36px 0; overflow: hidden; }
+    .fline { border-radius: 4px; background: rgba(255,255,255,.07); margin-bottom: 9px; }
+    .fnav-item {
+      font-size: 11px; padding: 6px 10px; border-radius: 6px; margin-bottom: 2px;
+      color: rgba(255,255,255,.28); cursor: default;
+    }
+    .fnav-item.active {
+      background: rgba(255,107,107,.1); color: var(--red); font-weight: 600;
+    }
+
+    /* ── Settings showcase ── */
+    .showcase-wrap {
+      background: linear-gradient(180deg, var(--bg) 0%, var(--bg2) 50%, var(--bg) 100%);
+      border-top: 1px solid var(--dim); border-bottom: 1px solid var(--dim);
+      padding: 80px 24px;
+    }
+    .showcase-inner {
+      max-width: 1000px; margin: 0 auto;
+      display: flex; align-items: center; gap: 72px; flex-wrap: wrap;
+    }
+    .showcase-text { flex: 1; min-width: 280px; }
+    .showcase-list { list-style: none; display: flex; flex-direction: column; gap: 11px; margin-top: 28px; }
+    .showcase-list li { display: flex; align-items: center; gap: 12px; font-size: 14px; color: rgba(255,255,255,.65); }
+    .check {
+      width: 20px; height: 20px; border-radius: 6px; flex-shrink: 0;
+      background: rgba(77,217,172,.1); border: 1px solid rgba(77,217,172,.25);
+      color: #4dd9ac; font-size: 11px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .showcase-widget { flex-shrink: 0; }
+
+    @media (max-width: 700px) {
+      .fake-nav { display: none; }
+      .browser-vp { height: 320px; }
+      .showcase-inner { gap: 40px; }
+    }
     @media (max-width: 600px) {
       nav { padding: 14px 20px; }
       .privacy-box { flex-direction: column; padding: 24px; }
       footer { flex-direction: column; text-align: center; }
+      .preview { padding: 0 12px; }
     }
   </style>
 </head>
@@ -312,92 +377,113 @@
       </a>
     </div>
 
-    <!-- Widget mocks -->
+    <!-- Browser mockup -->
     <div class="preview">
+      <div class="browser-frame">
 
-      <!-- Timer widget (v1.2.0 layout) -->
-      <div class="widget-mock">
-        <div class="wm-hdr">
-          <div class="wm-badge"><div class="wm-dot"></div> TRABAJO</div>
-          <div class="wm-hdr-r">
-            <div class="wm-icon-btn">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-            </div>
-            <div class="wm-xbtn">×</div>
+        <!-- Window chrome -->
+        <div class="browser-bar">
+          <div class="browser-dots">
+            <span style="background:#ff5f57"></span>
+            <span style="background:#febc2e"></span>
+            <span style="background:#28c840"></span>
           </div>
-        </div>
-        <div class="wm-info">Sesión 2 · 1 completada</div>
-        <div class="wm-time">18:32</div>
-        <div class="wm-bar"><div class="wm-fill"></div></div>
-        <div class="wm-btns">
-          <div class="wm-btn">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+          <div class="browser-url">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            en.wikipedia.org/wiki/Pomodoro_technique
           </div>
-          <div class="wm-btn wm-playbtn">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
-          </div>
-          <div class="wm-btn">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 1l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 23l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
-          </div>
-        </div>
-        <div style="text-align:center;padding:4px 14px 2px">
-          <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);border-radius:8px;color:rgba(255,255,255,.3);font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:6px 0">Nuevo ciclo</div>
-        </div>
-        <div style="display:flex;align-items:center;justify-content:space-between;padding:6px 14px 8px">
-          <span style="font-size:10px;color:rgba(255,255,255,.28);display:flex;align-items:center;gap:4px">
-            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-            Alarma
-          </span>
-          <div style="width:32px;height:18px;background:rgba(255,107,107,.5);border-radius:9px;position:relative;border:1px solid rgba(255,107,107,.4)">
-            <div style="position:absolute;width:14px;height:14px;top:1px;right:1px;background:#fff;border-radius:50%;box-shadow:0 1px 3px rgba(0,0,0,.4)"></div>
-          </div>
-        </div>
-        <div class="wm-credit">Designed by <span class="wm-sig">Iker G.</span></div>
-      </div>
-
-      <!-- Settings panel mock (4 tabs) -->
-      <div class="widget-mock sett-mock">
-        <div class="wm-hdr">
-          <div class="wm-badge"><div class="wm-dot" style="background:rgba(255,255,255,.2);box-shadow:none"></div> TRABAJO</div>
-          <div class="wm-xbtn">×</div>
-        </div>
-        <div class="wm-sett">
-          <!-- Tabs -->
-          <div style="display:flex;border-bottom:1px solid rgba(255,255,255,.06);margin:-4px -14px 0;padding:0 14px">
-            <div style="flex:1;padding:7px 2px 8px;font-size:8.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--red);border-bottom:2px solid var(--red);margin-bottom:-1px;text-align:center">Sesión</div>
-            <div style="flex:1;padding:7px 2px 8px;font-size:8.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.25);text-align:center">Aspecto</div>
-            <div style="flex:1;padding:7px 2px 8px;font-size:8.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.25);text-align:center">Stats</div>
-            <div style="flex:1;padding:7px 2px 8px;font-size:8.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.25);text-align:center">Bloqueos</div>
-          </div>
-          <!-- Session tab content -->
-          <div class="wm-s-row" style="margin-top:4px">
-            <span class="wm-s-lbl">Idioma</span>
-            <div class="wm-sizes">
-              <div class="wm-sz active">ES</div>
-              <div class="wm-sz">EN</div>
+          <div style="display:flex;gap:8px;flex-shrink:0;margin-left:8px">
+            <div style="width:20px;height:20px;background:rgba(255,107,107,.15);border:1px solid rgba(255,107,107,.3);border-radius:5px;display:flex;align-items:center;justify-content:center">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#ff6b6b" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
             </div>
           </div>
-          <div class="wm-s-sep"></div>
-          <div class="wm-s-row">
-            <span class="wm-s-lbl">Trabajo</span>
-            <span><input class="wm-s-inp" value="25" readonly><span class="wm-s-unit">min</span></span>
-          </div>
-          <div class="wm-s-row">
-            <span class="wm-s-lbl">Descanso</span>
-            <span><input class="wm-s-inp" value="5" readonly><span class="wm-s-unit">min</span></span>
-          </div>
-          <div class="wm-s-row">
-            <span class="wm-s-lbl">Desc. largo</span>
-            <div style="width:32px;height:18px;background:rgba(255,255,255,.1);border-radius:9px;position:relative;border:1px solid rgba(255,255,255,.08)">
-              <div style="position:absolute;width:14px;height:14px;top:1px;left:1px;background:rgba(255,255,255,.4);border-radius:50%"></div>
+        </div>
+
+        <!-- Viewport -->
+        <div class="browser-vp">
+          <div class="fake-pg">
+
+            <!-- Sidebar / TOC -->
+            <div class="fake-nav">
+              <div style="font-size:10px;font-weight:700;color:rgba(255,255,255,.18);letter-spacing:.1em;text-transform:uppercase;margin-bottom:14px">Contents</div>
+              <div class="fnav-item">Overview</div>
+              <div class="fnav-item active">Technique</div>
+              <div class="fnav-item">History</div>
+              <div class="fnav-item">Benefits</div>
+              <div class="fnav-item">Variations</div>
+              <div class="fnav-item">References</div>
+              <div style="height:1px;background:rgba(255,255,255,.05);margin:14px 0"></div>
+              <div style="font-size:10px;font-weight:700;color:rgba(255,255,255,.15);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px">Related</div>
+              <div class="fnav-item">Deep Work</div>
+              <div class="fnav-item">Time Blocking</div>
+              <div class="fnav-item">Flow State</div>
+            </div>
+
+            <!-- Article content -->
+            <div class="fake-art">
+              <!-- Title -->
+              <div style="height:22px;width:58%;background:rgba(255,255,255,.14);border-radius:5px;margin-bottom:8px"></div>
+              <div style="height:9px;width:38%;background:rgba(255,255,255,.05);border-radius:3px;margin-bottom:22px"></div>
+              <!-- Paragraph 1 -->
+              <div class="fline" style="height:10px;width:100%"></div>
+              <div class="fline" style="height:10px;width:93%"></div>
+              <div class="fline" style="height:10px;width:97%"></div>
+              <div class="fline" style="height:10px;width:85%;margin-bottom:20px"></div>
+              <!-- Subheading -->
+              <div style="height:15px;width:42%;background:rgba(255,255,255,.11);border-radius:4px;margin-bottom:13px"></div>
+              <!-- Paragraph 2 -->
+              <div class="fline" style="height:10px;width:100%"></div>
+              <div class="fline" style="height:10px;width:96%"></div>
+              <div class="fline" style="height:10px;width:78%"></div>
+              <!-- Code/quote block -->
+              <div style="background:rgba(255,255,255,.04);border-left:3px solid rgba(255,107,107,.4);border-radius:0 8px 8px 0;padding:12px 16px;margin-top:16px">
+                <div style="height:9px;width:72%;background:rgba(255,107,107,.25);border-radius:3px;margin-bottom:8px"></div>
+                <div style="height:9px;width:55%;background:rgba(255,255,255,.08);border-radius:3px;margin-bottom:6px"></div>
+                <div style="height:9px;width:82%;background:rgba(255,255,255,.06);border-radius:3px"></div>
+              </div>
             </div>
           </div>
-          <div class="wm-s-save" style="margin-top:4px">VOLVER</div>
-        </div>
-      </div>
 
-    </div>
-  </div>
+          <!-- Floating timer widget -->
+          <div style="position:absolute;bottom:20px;right:20px;z-index:10">
+            <div class="widget-mock" style="margin:0;box-shadow:0 20px 60px rgba(0,0,0,.75),0 0 60px rgba(255,107,107,.15)">
+              <div class="wm-hdr">
+                <div class="wm-badge"><div class="wm-dot"></div> TRABAJO</div>
+                <div class="wm-hdr-r">
+                  <div class="wm-icon-btn">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                  </div>
+                  <div class="wm-xbtn">×</div>
+                </div>
+              </div>
+              <div class="wm-info">Sesión 2 · 1 completada</div>
+              <div class="wm-time">18:32</div>
+              <div class="wm-bar"><div class="wm-fill"></div></div>
+              <div class="wm-btns">
+                <div class="wm-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg></div>
+                <div class="wm-btn wm-playbtn"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg></div>
+                <div class="wm-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 1l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 23l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg></div>
+              </div>
+              <div style="text-align:center;padding:2px 14px 2px">
+                <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);border-radius:8px;color:rgba(255,255,255,.3);font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:6px 0">NUEVO CICLO</div>
+              </div>
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:6px 14px 8px">
+                <span style="font-size:10px;color:rgba(255,255,255,.28);display:flex;align-items:center;gap:4px">
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                  Alarma
+                </span>
+                <div style="width:32px;height:18px;background:rgba(255,107,107,.5);border-radius:9px;position:relative;border:1px solid rgba(255,107,107,.4)">
+                  <div style="position:absolute;width:14px;height:14px;top:1px;right:1px;background:#fff;border-radius:50%;box-shadow:0 1px 3px rgba(0,0,0,.4)"></div>
+                </div>
+              </div>
+              <div class="wm-credit">Designed by <span class="wm-sig">Iker G.</span></div>
+            </div>
+          </div>
+
+        </div><!-- /browser-vp -->
+      </div><!-- /browser-frame -->
+    </div><!-- /preview -->
+  </div><!-- /hero -->
 
   <!-- Features -->
   <section id="features">
@@ -446,6 +532,21 @@
         <h3>Spanish & English</h3>
         <p>Auto-detected from your browser language. Switch between ES and EN at any time from the settings.</p>
       </div>
+      <div class="feat">
+        <div class="feat-icon">⏱️</div>
+        <h3>Fully adjustable durations</h3>
+        <p>Set work and break lengths anywhere from 1 to 99 minutes. Adapt the Pomodoro method to how you actually work.</p>
+      </div>
+      <div class="feat">
+        <div class="feat-icon green">📐</div>
+        <h3>3 widget sizes</h3>
+        <p>Pick S, M or L. Go small to stay discreet, or large to keep the timer always in the corner of your eye.</p>
+      </div>
+      <div class="feat">
+        <div class="feat-icon blue">👁️</div>
+        <h3>Auto-fades when idle</h3>
+        <p>The widget steps back when your cursor moves away — dropping to a subtle ghost so it never competes with your content.</p>
+      </div>
     </div>
 
     <!-- Themes -->
@@ -460,6 +561,85 @@
       </div>
     </div>
   </section>
+
+  <!-- Settings showcase -->
+  <div class="showcase-wrap">
+    <div class="showcase-inner">
+
+      <!-- Text -->
+      <div class="showcase-text">
+        <div class="section-label">Customise</div>
+        <h2>Built around<br>how you work</h2>
+        <p style="font-size:16px;color:var(--muted);line-height:1.65;margin-top:14px;max-width:400px">
+          Every detail is adjustable — session lengths, colors, widget size, blocked sites and more. Set it once, forget about it.
+        </p>
+        <ul class="showcase-list">
+          <li><span class="check">✓</span> Work &amp; break durations (1–99 min)</li>
+          <li><span class="check">✓</span> 4 dark color themes</li>
+          <li><span class="check">✓</span> 3 widget sizes — S, M, L</li>
+          <li><span class="check">✓</span> Custom background image</li>
+          <li><span class="check">✓</span> Long break every 4 sessions</li>
+          <li><span class="check">✓</span> Website blocker list</li>
+          <li><span class="check">✓</span> Alarm on/off</li>
+          <li><span class="check">✓</span> Spanish / English interface</li>
+        </ul>
+      </div>
+
+      <!-- Settings widget mock -->
+      <div class="showcase-widget">
+        <div class="widget-mock sett-mock" style="box-shadow:0 32px 80px rgba(0,0,0,.7),0 0 0 1px rgba(255,255,255,.06)">
+          <div class="wm-hdr">
+            <div class="wm-badge" style="color:rgba(255,255,255,.25)">
+              <div class="wm-dot" style="background:rgba(255,255,255,.15);box-shadow:none;animation:none"></div>
+              TRABAJO
+            </div>
+            <div class="wm-xbtn">×</div>
+          </div>
+          <div class="wm-sett">
+            <!-- 4 tabs — Aspecto active -->
+            <div style="display:flex;border-bottom:1px solid rgba(255,255,255,.06);margin:-4px -14px 0;padding:0 14px">
+              <div style="flex:1;padding:7px 2px 8px;font-size:8.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.22);text-align:center">Sesión</div>
+              <div style="flex:1;padding:7px 2px 8px;font-size:8.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--red);border-bottom:2px solid var(--red);margin-bottom:-1px;text-align:center">Aspecto</div>
+              <div style="flex:1;padding:7px 2px 8px;font-size:8.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.22);text-align:center">Stats</div>
+              <div style="flex:1;padding:7px 2px 8px;font-size:8.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.22);text-align:center">Bloqueos</div>
+            </div>
+            <!-- Aspecto content -->
+            <div class="wm-s-row" style="margin-top:8px">
+              <span class="wm-s-lbl">Tema</span>
+              <div class="wm-swatches">
+                <div class="wm-swatch active" style="background:linear-gradient(135deg,#ff6b6b,#4dd9ac)"></div>
+                <div class="wm-swatch" style="background:linear-gradient(135deg,#60a5fa,#34d399)"></div>
+                <div class="wm-swatch" style="background:linear-gradient(135deg,#fb923c,#fbbf24)"></div>
+                <div class="wm-swatch" style="background:linear-gradient(135deg,#c084fc,#f472b6)"></div>
+              </div>
+            </div>
+            <div class="wm-s-row">
+              <span class="wm-s-lbl">Tamaño</span>
+              <div class="wm-sizes">
+                <div class="wm-sz">S</div>
+                <div class="wm-sz active">M</div>
+                <div class="wm-sz">L</div>
+              </div>
+            </div>
+            <div class="wm-s-sep"></div>
+            <div class="wm-s-row">
+              <span class="wm-s-lbl">Fondo</span>
+              <div style="display:inline-flex;align-items:center;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:7px;color:rgba(255,255,255,.55);font-size:10px;font-weight:600;letter-spacing:.05em;padding:5px 9px">Elegir imagen</div>
+            </div>
+            <div class="wm-s-sep"></div>
+            <!-- Stats preview -->
+            <div class="wm-s-stats">
+              <div class="wm-s-stat"><span class="wm-s-stat-l">Hoy</span><span class="wm-s-stat-v">1h 45m</span></div>
+              <div class="wm-s-stat"><span class="wm-s-stat-l">Semana</span><span class="wm-s-stat-v">8h 20m</span></div>
+              <div class="wm-s-stat"><span class="wm-s-stat-l">Mes</span><span class="wm-s-stat-v">34h 05m</span></div>
+            </div>
+            <div class="wm-s-save" style="margin-top:6px">VOLVER</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
 
   <!-- Privacy -->
   <section>
