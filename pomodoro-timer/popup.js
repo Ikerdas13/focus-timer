@@ -14,11 +14,12 @@ function setUI(visible) {
 }
 
 chrome.storage.local.get('pomoVisible', function(data) {
-  setUI(data.pomoVisible !== false);
+  setUI(data.pomoVisible === true);
 });
 
 toggleEl.addEventListener('change', function() {
   var visible = toggleEl.checked;
   setUI(visible);
   chrome.storage.local.set({ pomoVisible: visible });
+  if (!visible) chrome.storage.local.remove('pomoState');
 });

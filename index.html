@@ -43,18 +43,23 @@
     "isAccessibleForFree": true,
     "privacyPolicyUrl": "https://ikerdas13.github.io/focus-timer/privacy",
     "featureList": [
-      "Floating widget visible on every tab",
-      "Desktop notifications when session ends",
-      "Sound alarm toggle",
-      "Long break every 4 sessions (classic Pomodoro cycle)",
-      "Custom work and break durations",
+      "Floating widget visible on every tab via Shadow DOM",
+      "Desktop notifications when work or break session ends",
+      "Sound alarm with 3-tone chime, toggleable from the widget",
+      "Long break after every 4 sessions (configurable duration)",
+      "Website blocker — block distracting sites during work sessions",
+      "Custom work and break durations (1–99 min)",
       "4 premium dark color themes: Obsidian, Ocean, Sunset, Cosmic",
-      "3 widget sizes S M L",
-      "Custom background image",
-      "Daily weekly and monthly study statistics",
-      "Bilingual Spanish and English interface",
-      "Snap to corners when dragging",
-      "Auto-hide when mouse moves away"
+      "3 widget sizes: S, M, L",
+      "Custom background image (auto-compressed)",
+      "Daily, weekly and monthly study statistics",
+      "Real-time sync across all open tabs",
+      "Snap to nearest corner on drag release",
+      "Auto-fade when mouse moves away",
+      "Spanish and English interface",
+      "Show or hide the timer from the extension popup",
+      "New cycle button to reset all sessions",
+      "Runs entirely in the browser — no server, no account"
     ]
   }
   </script>
@@ -140,7 +145,7 @@
     .preview {
       margin: 64px auto 0;
       max-width: 860px; padding: 0 24px;
-      display: flex; justify-content: center;
+      display: flex; justify-content: center; align-items: flex-start; gap: 20px; flex-wrap: wrap;
     }
     .widget-mock {
       background: linear-gradient(160deg, #17172b, #0f0f1e);
@@ -148,24 +153,50 @@
       box-shadow: 0 32px 80px rgba(0,0,0,.7), 0 0 60px rgba(255,107,107,.12);
       width: 204px; overflow: hidden; font-family: inherit;
     }
+    .widget-mock.sett-mock {
+      border-color: rgba(255,255,255,.1);
+      box-shadow: 0 32px 80px rgba(0,0,0,.7);
+    }
     .wm-hdr {
       display: flex; align-items: center; justify-content: space-between;
-      padding: 10px 12px 9px;
+      padding: 10px 10px 9px;
       border-bottom: 1px solid rgba(255,255,255,.05);
       background: rgba(255,255,255,.02);
     }
     .wm-badge { display: flex; align-items: center; gap: 6px; font-size: 9.5px; font-weight: 700; letter-spacing: .12em; color: var(--red); }
     .wm-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--red); box-shadow: 0 0 6px var(--red); animation: pulse 1.4s ease-in-out infinite; }
     @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.3;transform:scale(.8)} }
+    .wm-hdr-r { display: flex; align-items: center; gap: 1px; }
+    .wm-icon-btn { color: rgba(255,255,255,.2); width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; }
+    .wm-xbtn { color: rgba(255,255,255,.18); font-size: 15px; padding: 2px 4px; }
     .wm-time { text-align: center; font-size: 50px; font-weight: 800; letter-spacing: -2px; color: var(--red); text-shadow: 0 0 32px rgba(255,107,107,.45); padding: 16px 0 8px; font-variant-numeric: tabular-nums; }
     .wm-bar { margin: 0 14px 4px; height: 3px; background: rgba(255,255,255,.06); border-radius: 3px; overflow: hidden; }
     .wm-fill { width: 62%; height: 100%; background: linear-gradient(90deg, rgba(255,107,107,.55), var(--red)); box-shadow: 0 0 8px rgba(255,107,107,.6); border-radius: 3px; }
     .wm-btns { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 12px 10px; }
     .wm-btn { background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.09); border-radius: 10px; color: rgba(255,255,255,.45); width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; }
     .wm-playbtn { width: 46px; height: 46px; border-radius: 50%; background: rgba(255,107,107,.12); border-color: rgba(255,107,107,.4); color: var(--red); box-shadow: 0 0 18px rgba(255,107,107,.2); }
-    .wm-info { text-align: center; font-size: 10px; color: rgba(255,255,255,.22); padding-bottom: 5px; }
+    .wm-info { text-align: center; font-size: 10px; color: rgba(255,255,255,.22); padding: 8px 0 0; letter-spacing: .05em; }
     .wm-credit { text-align: center; font-size: 9.5px; color: rgba(255,255,255,.35); padding: 7px 0 11px; border-top: 1px solid rgba(255,255,255,.07); margin: 0 14px; }
     .wm-sig { color: #38bdf8; font-weight: 800; }
+    /* Settings mock */
+    .wm-sett { padding: 14px; display: flex; flex-direction: column; gap: 10px; }
+    .wm-s-title { font-size: 10px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: rgba(255,255,255,.3); text-align: center; }
+    .wm-s-row { display: flex; align-items: center; justify-content: space-between; }
+    .wm-s-lbl { font-size: 11px; color: rgba(255,255,255,.45); }
+    .wm-s-inp { background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.12); border-radius: 8px; color: #fff; font-size: 14px; font-weight: 700; width: 48px; text-align: center; padding: 5px 4px; font-family: inherit; }
+    .wm-s-unit { font-size: 10px; color: rgba(255,255,255,.28); margin-left: 4px; }
+    .wm-s-sep { height: 1px; background: rgba(255,255,255,.06); }
+    .wm-swatches { display: flex; gap: 7px; }
+    .wm-swatch { width: 18px; height: 18px; border-radius: 50%; }
+    .wm-swatch.active { outline: 2px solid rgba(255,255,255,.7); outline-offset: 1px; }
+    .wm-sizes { display: flex; gap: 4px; }
+    .wm-sz { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1); border-radius: 7px; color: rgba(255,255,255,.38); font-size: 10px; font-weight: 700; width: 26px; height: 24px; display: flex; align-items: center; justify-content: center; font-family: inherit; }
+    .wm-sz.active { background: rgba(255,107,107,.18); border-color: rgba(255,107,107,.5); color: var(--red); }
+    .wm-s-stats { display: flex; flex-direction: column; gap: 5px; }
+    .wm-s-stat { display: flex; justify-content: space-between; }
+    .wm-s-stat-l { font-size: 11px; color: rgba(255,255,255,.38); }
+    .wm-s-stat-v { font-size: 11px; font-weight: 700; color: var(--red); }
+    .wm-s-save { background: rgba(255,107,107,.14); border: 1px solid rgba(255,107,107,.4); border-radius: 10px; color: var(--red); font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; padding: 8px; text-align: center; margin-top: 2px; }
 
     /* ── Features ── */
     section { padding: 80px 24px; max-width: 1000px; margin: 0 auto; }
@@ -281,13 +312,21 @@
       </a>
     </div>
 
-    <!-- Widget mock -->
+    <!-- Widget mocks -->
     <div class="preview">
+
+      <!-- Timer widget (v1.2.0 layout) -->
       <div class="widget-mock">
         <div class="wm-hdr">
-          <div class="wm-badge"><div class="wm-dot"></div> WORK</div>
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.2)" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          <div class="wm-badge"><div class="wm-dot"></div> TRABAJO</div>
+          <div class="wm-hdr-r">
+            <div class="wm-icon-btn">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+            </div>
+            <div class="wm-xbtn">×</div>
+          </div>
         </div>
+        <div class="wm-info">Sesión 2 · 1 completada</div>
         <div class="wm-time">18:32</div>
         <div class="wm-bar"><div class="wm-fill"></div></div>
         <div class="wm-btns">
@@ -301,9 +340,62 @@
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 1l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 23l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
           </div>
         </div>
-        <div class="wm-info">Session 2 · 1 session done</div>
+        <div style="text-align:center;padding:4px 14px 2px">
+          <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);border-radius:8px;color:rgba(255,255,255,.3);font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:6px 0">Nuevo ciclo</div>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:6px 14px 8px">
+          <span style="font-size:10px;color:rgba(255,255,255,.28);display:flex;align-items:center;gap:4px">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+            Alarma
+          </span>
+          <div style="width:32px;height:18px;background:rgba(255,107,107,.5);border-radius:9px;position:relative;border:1px solid rgba(255,107,107,.4)">
+            <div style="position:absolute;width:14px;height:14px;top:1px;right:1px;background:#fff;border-radius:50%;box-shadow:0 1px 3px rgba(0,0,0,.4)"></div>
+          </div>
+        </div>
         <div class="wm-credit">Designed by <span class="wm-sig">Iker G.</span></div>
       </div>
+
+      <!-- Settings panel mock (4 tabs) -->
+      <div class="widget-mock sett-mock">
+        <div class="wm-hdr">
+          <div class="wm-badge"><div class="wm-dot" style="background:rgba(255,255,255,.2);box-shadow:none"></div> TRABAJO</div>
+          <div class="wm-xbtn">×</div>
+        </div>
+        <div class="wm-sett">
+          <!-- Tabs -->
+          <div style="display:flex;border-bottom:1px solid rgba(255,255,255,.06);margin:-4px -14px 0;padding:0 14px">
+            <div style="flex:1;padding:7px 2px 8px;font-size:8.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--red);border-bottom:2px solid var(--red);margin-bottom:-1px;text-align:center">Sesión</div>
+            <div style="flex:1;padding:7px 2px 8px;font-size:8.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.25);text-align:center">Aspecto</div>
+            <div style="flex:1;padding:7px 2px 8px;font-size:8.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.25);text-align:center">Stats</div>
+            <div style="flex:1;padding:7px 2px 8px;font-size:8.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.25);text-align:center">Bloqueos</div>
+          </div>
+          <!-- Session tab content -->
+          <div class="wm-s-row" style="margin-top:4px">
+            <span class="wm-s-lbl">Idioma</span>
+            <div class="wm-sizes">
+              <div class="wm-sz active">ES</div>
+              <div class="wm-sz">EN</div>
+            </div>
+          </div>
+          <div class="wm-s-sep"></div>
+          <div class="wm-s-row">
+            <span class="wm-s-lbl">Trabajo</span>
+            <span><input class="wm-s-inp" value="25" readonly><span class="wm-s-unit">min</span></span>
+          </div>
+          <div class="wm-s-row">
+            <span class="wm-s-lbl">Descanso</span>
+            <span><input class="wm-s-inp" value="5" readonly><span class="wm-s-unit">min</span></span>
+          </div>
+          <div class="wm-s-row">
+            <span class="wm-s-lbl">Desc. largo</span>
+            <div style="width:32px;height:18px;background:rgba(255,255,255,.1);border-radius:9px;position:relative;border:1px solid rgba(255,255,255,.08)">
+              <div style="position:absolute;width:14px;height:14px;top:1px;left:1px;background:rgba(255,255,255,.4);border-radius:50%"></div>
+            </div>
+          </div>
+          <div class="wm-s-save" style="margin-top:4px">VOLVER</div>
+        </div>
+      </div>
+
     </div>
   </div>
 
@@ -317,17 +409,22 @@
       <div class="feat">
         <div class="feat-icon">🎯</div>
         <h3>Floating on every tab</h3>
-        <p>The timer stays visible as you browse. Drag it to any corner — it snaps in place automatically.</p>
+        <p>The timer stays visible as you browse. Drag it anywhere — it snaps to the nearest corner when you release.</p>
       </div>
       <div class="feat">
         <div class="feat-icon green">🔔</div>
-        <h3>Notifications & alarm</h3>
-        <p>Desktop notifications and an optional sound alarm when your session ends, even with the tab in the background.</p>
+        <h3>Alarm + notifications</h3>
+        <p>3-tone chime and a desktop notification when your session ends. Toggle the alarm on or off directly from the widget.</p>
       </div>
       <div class="feat">
         <div class="feat-icon">🏖️</div>
         <h3>Long break every 4 sessions</h3>
-        <p>Classic Pomodoro cycle: after 4 work sessions, a longer rest (15–30 min). Configurable and optional.</p>
+        <p>Classic Pomodoro cycle: after 4 work sessions, a longer rest kicks in automatically. Duration is configurable.</p>
+      </div>
+      <div class="feat">
+        <div class="feat-icon">🚫</div>
+        <h3>Website blocker</h3>
+        <p>Add any site to the block list and it gets a full-screen overlay during work sessions. Automatically lifts on break.</p>
       </div>
       <div class="feat">
         <div class="feat-icon blue">⚡</div>
@@ -340,9 +437,14 @@
         <p>Daily, weekly and monthly study minutes tracked automatically. No setup needed.</p>
       </div>
       <div class="feat">
-        <div class="feat-icon">🌍</div>
+        <div class="feat-icon">🖼️</div>
+        <h3>Custom background image</h3>
+        <p>Set your own photo as the widget background. Auto-compressed so it never slows down your browser.</p>
+      </div>
+      <div class="feat">
+        <div class="feat-icon blue">🌍</div>
         <h3>Spanish & English</h3>
-        <p>Switch between languages directly from the widget. Preference saved across all tabs.</p>
+        <p>Auto-detected from your browser language. Switch between ES and EN at any time from the settings.</p>
       </div>
     </div>
 
@@ -368,11 +470,14 @@
         <p>All timer state, settings and statistics are stored locally using <code style="color:var(--red);font-size:12px">chrome.storage.local</code>. No servers, no accounts, no tracking of any kind.</p>
         <table class="privacy-table">
           <tr><th>Key stored</th><th>What it contains</th></tr>
-          <tr><td>pomoState</td><td>Timer mode, elapsed time, session count</td></tr>
-          <tr><td>pomoSettings</td><td>Durations, theme, size, language, alarm, long break</td></tr>
+          <tr><td>pomoState</td><td>Timer mode, elapsed time, session count, long-break flag</td></tr>
+          <tr><td>pomoSettings</td><td>Work/break durations, theme, size, language, alarm, long break</td></tr>
           <tr><td>pomoBg</td><td>Custom background image (compressed JPEG, max 640 px)</td></tr>
           <tr><td>pomoStats</td><td>Daily study minutes (date-keyed, pruned after 1 year)</td></tr>
-          <tr><td>pomoPosition</td><td>Widget corner position (top-left, bottom-right…)</td></tr>
+          <tr><td>pomoVisible</td><td>Whether the widget is shown or hidden</td></tr>
+          <tr><td>pomoPosition</td><td>Widget corner (top-left, top-right, bottom-left, bottom-right)</td></tr>
+          <tr><td>pomoBlacklist</td><td>List of blocked domains during work sessions</td></tr>
+          <tr><td>pomoRatingDismissed</td><td>Whether the rating prompt has been dismissed</td></tr>
         </table>
         <div style="margin-top:18px">
           <a href="privacy" style="font-size:13px;color:var(--muted);text-decoration:underline">Read full Privacy Policy →</a>

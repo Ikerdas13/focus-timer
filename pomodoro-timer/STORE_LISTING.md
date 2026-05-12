@@ -17,7 +17,7 @@ Floating Pomodoro timer on every tab. Focus cycles, dark themes & study stats. S
 
 ---
 
-## Descripción completa (aparece en la ficha — primeros 2 párrafos son los más importantes para SEO)
+## Descripción completa — ENGLISH (pegar en la Chrome Web Store)
 
 ```
 Focus Timer is a premium floating Pomodoro timer that stays visible on every tab as you browse. No more switching windows to check the time — your Pomodoro timer is always right there.
@@ -29,12 +29,15 @@ Built on the Pomodoro Technique: 25 minutes of deep work, 5-minute break, repeat
 • Floating widget — drag it to any corner of any website
 • Works on every tab — one timer, synced across all windows
 • Desktop notifications — get alerted when work or break ends, even if the tab is in the background
+• Sound alarm — optional bell that plays when your session changes
+• Long break — automatic 15–30 min rest after every 4 work sessions (classic Pomodoro cycle)
 • Custom work & break durations — set your own Pomodoro cycle
 • 4 premium dark themes — Obsidian, Ocean, Sunset, Cosmic
 • 3 widget sizes — S / M / L
 • Custom background image — use your own photo
 • Real-time study stats — daily, weekly and monthly minutes tracked automatically
 • Persistent timer — keeps running when you switch tabs or reload
+• Bilingual — switch between Spanish and English directly from the widget
 
 ★ PERFECT FOR
 
@@ -45,6 +48,41 @@ Students, remote workers, developers, writers — anyone who needs structured fo
 All data is stored locally in your browser. Nothing is sent to any server. No tracking. No analytics. Full details in the Privacy Policy.
 
 Designed with care by Iker G.
+```
+
+---
+
+## Descripción completa — ESPAÑOL
+
+```
+Focus Timer es un temporizador Pomodoro flotante premium que permanece visible en todas las pestañas mientras navegas. Sin cambiar de ventana para ver el tiempo — el timer siempre está ahí.
+
+Basado en la Técnica Pomodoro: 25 minutos de trabajo intenso, 5 minutos de descanso, repetir. Demostrado para aumentar el enfoque, reducir la procrastinación y hacer las sesiones de estudio más productivas.
+
+★ CARACTERÍSTICAS PRINCIPALES
+
+• Widget flotante — arrástralo a cualquier esquina de cualquier web
+• Funciona en todas las pestañas — un solo timer, sincronizado entre ventanas
+• Notificaciones de escritorio — aviso cuando termina el trabajo o el descanso, aunque la pestaña esté en segundo plano
+• Alarma de sonido — pitido opcional cuando cambia la sesión
+• Descanso largo — pausa de 15–30 min automática cada 4 sesiones de trabajo (ciclo Pomodoro clásico)
+• Duración personalizada — configura tus propios tiempos de trabajo y descanso
+• 4 temas oscuros premium — Obsidian, Ocean, Sunset, Cosmic
+• 3 tamaños de widget — S / M / L
+• Imagen de fondo personalizada — usa tu propia foto
+• Estadísticas de estudio en tiempo real — minutos diarios, semanales y mensuales registrados automáticamente
+• Timer persistente — sigue corriendo aunque cambies de pestaña o recargues
+• Bilingüe — cambia entre español e inglés directamente desde el widget
+
+★ IDEAL PARA
+
+Estudiantes, trabajadores remotos, desarrolladores, escritores — cualquiera que necesite tiempo de enfoque estructurado. Funciona perfecto junto a vídeos de estudio, sesiones de código, sprints de escritura y preparación de exámenes.
+
+★ PRIVACIDAD
+
+Todos los datos se almacenan localmente en tu navegador. No se envía nada a ningún servidor. Sin seguimiento. Sin analíticas. Más detalles en la Política de Privacidad.
+
+Diseñado con cuidado por Iker G.
 ```
 
 ---

@@ -11,6 +11,8 @@ async function injectTab(tabId, reset) {
           window.__pomoActive = false;
           var el = document.getElementById('__pomo_host__');
           if (el) el.remove();
+          var bl = document.getElementById('__pomo_block__');
+          if (bl) bl.remove();
         }
       });
     }
@@ -26,6 +28,7 @@ async function injectAllTabs() {
 }
 
 chrome.runtime.onInstalled.addListener(function() {
+  chrome.storage.local.set({ pomoVisible: false });
   injectAllTabs();
 });
 
@@ -33,6 +36,12 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
   if (changeInfo.status !== 'complete') return;
   if (!tab.url || (!tab.url.startsWith('http://') && !tab.url.startsWith('https://'))) return;
   injectTab(tabId, false);
+});
+
+// ── Ocultar al iniciar Chrome ──────────────────────────────────────────────
+chrome.runtime.onStartup.addListener(function() {
+  chrome.storage.local.set({ pomoVisible: false });
+  chrome.storage.local.remove('pomoState');
 });
 
 // ── Notificaciones del sistema ─────────────────────────────────────────────

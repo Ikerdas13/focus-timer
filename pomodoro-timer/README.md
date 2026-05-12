@@ -69,6 +69,21 @@ Manifest V3 · Shadow DOM · Background service worker · `chrome.storage.onChan
 
 ---
 
+## Changelog
+
+### v1.2.0
+- Settings redesigned with tab navigation (Sesión · Aspecto · Stats · Bloqueos)
+- All settings panels fixed height with minimal scrollbar
+- Gear button hides while settings are open
+- "Guardar" renamed to "Volver", visible in all sections
+- New cycle button (text, rectangle border) below controls
+- Session info moved above the timer clock
+- Compacted layout and increased idle opacity
+- Rating prompt after 3 completed sessions
+- Timer resets when the widget is toggled off or Chrome is reopened
+
+---
+
 ## License
 
 MIT

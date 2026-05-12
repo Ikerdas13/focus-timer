@@ -1,36 +1,36 @@
 {
-  "manifest_version": 3,
-  "name": "Focus Timer — Pomodoro Productivity Timer",
-  "short_name": "Focus Timer",
-  "description": "Floating Pomodoro timer on every tab. 25/5 min focus cycles, custom themes, study stats. Stay focused without switching windows.",
-  "version": "1.0.0",
-  "author": "Iker G.",
-  "permissions": ["storage", "scripting", "tabs", "notifications"],
-  "host_permissions": ["http://*/*", "https://*/*"],
-  "icons": {
-    "16":  "icons/icon16.png",
-    "32":  "icons/icon32.png",
-    "48":  "icons/icon48.png",
-    "128": "icons/icon128.png"
-  },
-  "action": {
-    "default_popup": "popup.html",
-    "default_title": "Focus Timer",
-    "default_icon": {
-      "16":  "icons/icon16.png",
-      "32":  "icons/icon32.png",
-      "48":  "icons/icon48.png",
-      "128": "icons/icon128.png"
-    }
-  },
-  "background": {
-    "service_worker": "background.js"
-  },
-  "content_scripts": [
-    {
-      "matches": ["http://*/*", "https://*/*"],
-      "js": ["content.js"],
+   "action": {
+      "default_icon": {
+         "128": "icons/icon128.png",
+         "16": "icons/icon16.png",
+         "32": "icons/icon32.png",
+         "48": "icons/icon48.png"
+      },
+      "default_popup": "popup.html",
+      "default_title": "Focus Timer"
+   },
+   "author": "Iker G.",
+   "background": {
+      "service_worker": "background.js"
+   },
+   "content_scripts": [ {
+      "js": [ "content.js" ],
+      "matches": [ "http://*/*", "https://*/*" ],
       "run_at": "document_end"
-    }
-  ]
+   } ],
+   "description": "Floating Pomodoro timer on every tab. 25/5 min focus cycles, custom themes, study stats. Stay focused without switching windows.",
+   "host_permissions": [ "http://*/*", "https://*/*" ],
+   "icons": {
+      "128": "icons/icon128.png",
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png",
+      "48": "icons/icon48.png"
+   },
+   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvHdy4j//0APtfTph1DcN0v3+002NXXH5WtWuT8x8Kjk2+w2UZntL930tMVVH7vAUMa+pEgCcj+38VEmSkf6AXjtifh/4O1pLIYaJh/30LqRt9fjd05iakyK+d2bbTFwQxybeHPu2G62r1S2ZaEXEVYrfq8xd74nlVGToUX3jg7WOoTCKOEcxS+IP/mJvMgFq3i+tz2wiwrXa14cVRops1k3eijKLOnnw9qHzBfNIIHYDhecbDmvyUUtMeGMvn+dpogjXP86/QnEfES+KRjXxz77hSZB53AZ0D1WVcvUcInLDsEdfOHXQRQqJz0dX2dnMlZLtn+BlsMW9lgcpmaIn+QIDAQAB",
+   "manifest_version": 3,
+   "name": "Focus Timer — Pomodoro Productivity Timer",
+   "permissions": [ "storage", "scripting", "tabs", "notifications" ],
+   "short_name": "Focus Timer",
+   "update_url": "https://clients2.google.com/service/update2/crx",
+   "version": "1.2.0"
 }
