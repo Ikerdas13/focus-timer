@@ -75,6 +75,7 @@
     position: 'fixed', bottom: '24px', right: '24px',
     zIndex: '2147483647', userSelect: 'none',
     fontSize: '16px', lineHeight: 'normal',
+    display: 'none',
   });
   var shadow = host.attachShadow({ mode: 'open' });
   document.documentElement.appendChild(host);
@@ -766,7 +767,6 @@
       if (data.pomoSettings.longBreakDur) LONG_BREAK = data.pomoSettings.longBreakDur * 60;
     }
     loadState(data.pomoState);
-    if (data.pomoVisible !== true) host.style.display = 'none';
     if (data.pomoBg) applyBg(data.pomoBg);
     if (data.pomoPosition)  applyPosition(data.pomoPosition.l, data.pomoPosition.t);
     if (data.pomoBlacklist) blacklist = data.pomoBlacklist;
@@ -774,6 +774,7 @@
     ratingCta.href = STORE_URL;
     applyTheme(currentTheme);
     render();
+    if (data.pomoVisible === true) host.style.display = '';
   });
 
   // ── Sincronización entre pestañas ──────────────────────────────────────────
