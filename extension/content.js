@@ -24,6 +24,13 @@
   var STORE_URL = 'https://chromewebstore.google.com/detail/focus-timer-%E2%80%94-pomodoro-pr/gdidicppaicpkamdlnljeakdefkknikh/reviews';
   var lang = (navigator.language || 'es').toLowerCase().startsWith('en') ? 'en' : 'es';
 
+  var currentOpacity  = 100;
+  var currentRadius   = 1;
+  var clockFmt        = 'off';
+  var showSessionInfo = true;
+  var customAccent    = null;
+  var currentlyIdle   = false;
+
   var STRINGS = {
     es: {
       work: 'TRABAJO', brk: 'DESCANSO',
@@ -43,7 +50,8 @@
       blockTitle: 'BLOQUEADO', blockMode: 'Modo trabajo',
       blockMsg: 'Termina la sesión para acceder durante el descanso',
       tabSession: 'Sesión', tabAppearance: 'Aspecto', tabStats: 'Stats', tabBlocks: 'Bloqueos',
-      ratingMsg: '¿Te está ayudando?', ratingCta: 'Valórala ⭐'
+      ratingMsg: '¿Te está ayudando?', ratingCta: 'Valórala ⭐',
+      opacity: 'Opacidad', radius: 'Bordes', clockLbl: 'Reloj', showSess: 'Info sesión'
     },
     en: {
       work: 'WORK', brk: 'BREAK',
@@ -63,7 +71,8 @@
       blockTitle: 'BLOCKED', blockMode: 'Focus mode',
       blockMsg: 'Finish the session to access this during the break',
       tabSession: 'Session', tabAppearance: 'Style', tabStats: 'Stats', tabBlocks: 'Blocks',
-      ratingMsg: 'Is it helping you?', ratingCta: 'Rate it ⭐'
+      ratingMsg: 'Is it helping you?', ratingCta: 'Rate it ⭐',
+      opacity: 'Opacity', radius: 'Corners', clockLbl: 'Clock', showSess: 'Session info'
     }
   };
   function T(k) { return STRINGS[lang][k]; }
@@ -127,6 +136,8 @@
     .w.t1  { --cw:#60a5fa; --cb:#34d399; --bg1:#071828; --bg2:#040e1a; }
     .w.t2  { --cw:#fb923c; --cb:#fbbf24; --bg1:#1a1008; --bg2:#0f0904; }
     .w.t3  { --cw:#c084fc; --cb:#f472b6; --bg1:#180828; --bg2:#0e0418; }
+    .w.t4  { --cw:#22c55e; --cb:#6ee7b7; --bg1:#0a1810; --bg2:#050e08; }
+    .w.t5  { --cw:#f43f5e; --cb:#fb923c; --bg1:#1a080c; --bg2:#0a0408; }
     .w { font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",system-ui,sans-serif; position:relative; background:linear-gradient(160deg,var(--bg1) 0%,var(--bg2) 100%); border-radius:20px; box-shadow:0 24px 64px rgba(0,0,0,.8),0 8px 24px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.07); width:204px; border:1px solid rgba(255,255,255,.08); transition:border-color .5s,box-shadow .5s,opacity 0.35s ease; overflow:hidden; }
     .w.work  { border-color:rgb(from var(--cw) r g b/.35); box-shadow:0 24px 64px rgba(0,0,0,.8),0 8px 24px rgba(0,0,0,.5),0 0 48px rgb(from var(--cw) r g b/.1),inset 0 1px 0 rgba(255,255,255,.07); }
     .w.break { border-color:rgb(from var(--cb) r g b/.35); box-shadow:0 24px 64px rgba(0,0,0,.8),0 8px 24px rgba(0,0,0,.5),0 0 48px rgb(from var(--cb) r g b/.1),inset 0 1px 0 rgba(255,255,255,.07); }
@@ -193,6 +204,21 @@
     .swatch.t1 { background:linear-gradient(135deg,#60a5fa,#34d399); }
     .swatch.t2 { background:linear-gradient(135deg,#fb923c,#fbbf24); }
     .swatch.t3 { background:linear-gradient(135deg,#c084fc,#f472b6); }
+    .swatch.t4 { background:linear-gradient(135deg,#22c55e,#6ee7b7); }
+    .swatch.t5 { background:linear-gradient(135deg,#f43f5e,#fb923c); }
+    .s-color-label { cursor:pointer; position:relative; display:flex; }
+    .s-color-label input[type="color"] { position:absolute; opacity:0; width:1px; height:1px; overflow:hidden; }
+    .s-color-dot { width:18px; height:18px; border-radius:50%; border:2px solid rgba(255,255,255,.18); cursor:pointer; transition:transform .15s,border-color .2s; background:conic-gradient(#ff6b6b,#fbbf24,#4dd9ac,#60a5fa,#c084fc,#ff6b6b); flex-shrink:0; }
+    .s-color-dot:hover { transform:scale(1.2); border-color:rgba(255,255,255,.5); }
+    .s-color-dot.active { border-color:rgba(255,255,255,.7); transform:scale(1.1); }
+    .s-br { width:22px; height:22px; padding:0; }
+    .s-br[data-br="0"] { border-radius:3px; }
+    .s-br[data-br="2"] { border-radius:50%; }
+    .s-slider { -webkit-appearance:none; appearance:none; width:100%; height:3px; background:rgba(255,255,255,.1); border-radius:3px; outline:none; cursor:pointer; margin:0; }
+    .s-slider::-webkit-slider-thumb { -webkit-appearance:none; width:14px; height:14px; border-radius:50%; background:var(--cw); cursor:pointer; box-shadow:0 0 6px rgba(0,0,0,.5); }
+    .s-slider::-moz-range-thumb { width:14px; height:14px; border-radius:50%; background:var(--cw); cursor:pointer; border:none; }
+    .s-opacity-row { display:flex; flex-direction:column; gap:4px; }
+    .live-time { text-align:center; font-size:9.5px; color:rgba(255,255,255,.22); padding:2px 0 0; letter-spacing:.08em; font-variant-numeric:tabular-nums; }
     .s-sizes { display:flex; gap:4px; }
     .s-sz { background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.1); border-radius:7px; color:rgba(255,255,255,.38); font-size:10px; font-weight:700; width:28px; height:26px; cursor:pointer; transition:all .15s; font-family:inherit; letter-spacing:.05em; padding:0; }
     .s-sz:hover { background:rgba(255,255,255,.12); color:rgba(255,255,255,.75); }
@@ -255,6 +281,7 @@
       </div>
       <div id="main">
         <div class="info" id="inf">Sesión 1 · 0 completadas</div>
+        <div class="live-time" id="clock" style="display:none"></div>
         <div class="time" id="t">25:00</div>
         <div class="bar-wrap"><div class="bar-track"><div class="bar-fill" id="bar" style="width:100%"></div></div></div>
         <div class="btns">
@@ -283,8 +310,13 @@
           <div class="s-row" id="s-long-row" style="display:none"><span class="s-lbl" id="s-long-dur-lbl">Duración</span><div class="s-inp-wrap"><input class="s-inp" id="s-long-dur" type="number" min="5" max="60" value="15"><span class="s-unit">min</span></div></div>
         </div>
         <div class="s-panel" id="s-panel-appearance" style="display:none">
-          <div class="s-themes"><span class="s-lbl" id="s-theme-lbl">Tema</span><div class="s-swatches"><div class="swatch t0 active" data-t="0"></div><div class="swatch t1" data-t="1"></div><div class="swatch t2" data-t="2"></div><div class="swatch t3" data-t="3"></div></div></div>
+          <div class="s-themes"><span class="s-lbl" id="s-theme-lbl">Tema</span><div style="display:flex;align-items:center;gap:7px"><div class="s-swatches"><div class="swatch t0 active" data-t="0"></div><div class="swatch t1" data-t="1"></div><div class="swatch t2" data-t="2"></div><div class="swatch t3" data-t="3"></div><div class="swatch t4" data-t="4"></div><div class="swatch t5" data-t="5"></div></div><label class="s-color-label" title="Custom"><input type="color" id="s-accent" value="#ff6b6b"><div class="s-color-dot" id="s-color-dot"></div></label></div></div>
           <div class="s-row"><span class="s-lbl" id="s-size-lbl">Tamaño</span><div class="s-sizes"><button class="s-sz" data-sz="0">S</button><button class="s-sz active" data-sz="1">M</button><button class="s-sz" data-sz="2">L</button></div></div>
+          <div class="s-row"><span class="s-lbl" id="s-radius-lbl">Bordes</span><div class="s-sizes"><button class="s-sz s-br" data-br="0"></button><button class="s-sz s-br active" data-br="1"></button><button class="s-sz s-br" data-br="2"></button></div></div>
+          <div class="s-opacity-row"><div class="s-row"><span class="s-lbl" id="s-opacity-lbl">Opacidad</span><span class="s-stat-v" id="s-opacity-val">100%</span></div><input type="range" class="s-slider" id="s-opacity" min="30" max="100" value="100" step="5"></div>
+          <div class="s-row"><span class="s-lbl" id="s-clock-lbl">Reloj</span><div class="s-sizes"><button class="s-sz s-fmt active" data-fmt="off">—</button><button class="s-sz s-fmt" data-fmt="24">24h</button><button class="s-sz s-fmt" data-fmt="12">12h</button></div></div>
+          <div class="s-sep"></div>
+          <div class="s-row"><span class="s-lbl" id="s-show-sess-lbl">Info sesión</span><label class="alarm-sw"><input type="checkbox" id="s-show-sess" checked><div class="alarm-trk"></div></label></div>
           <div class="s-row"><span class="s-lbl" id="s-bg-lbl">Fondo</span><div class="s-bg-row"><label class="s-file-btn" id="s-file-label"><span id="s-file-label-txt">Elegir imagen</span><input type="file" id="s-file" accept="image/*" style="display:none"></label><button class="s-clear-btn" id="s-clear-bg" style="display:none">Quitar</button></div></div>
           <div id="s-thumb"></div>
         </div>
@@ -340,6 +372,14 @@
   var ratingBar   = shadow.getElementById('rating-bar');
   var ratingCta   = shadow.getElementById('rating-cta');
   var ratingX     = shadow.getElementById('rating-x');
+  var sOpacity    = shadow.getElementById('s-opacity');
+  var sOpacityVal = shadow.getElementById('s-opacity-val');
+  var sBrBtns     = shadow.querySelectorAll('.s-br');
+  var sFmtBtns    = shadow.querySelectorAll('.s-fmt');
+  var sShowSess   = shadow.getElementById('s-show-sess');
+  var sAccent     = shadow.getElementById('s-accent');
+  var sColorDot   = shadow.getElementById('s-color-dot');
+  var clock       = shadow.getElementById('clock');
 
   // ── Utilidades ─────────────────────────────────────────────────────────────
   function fmt(s) { return String(Math.floor(s/60)).padStart(2,'0') + ':' + String(s%60).padStart(2,'0'); }
@@ -420,8 +460,13 @@
   // ── Temas ──────────────────────────────────────────────────────────────────
   function applyTheme(idx) {
     currentTheme = idx;
+    customAccent = null;
+    w.style.removeProperty('--cw');
+    w.style.removeProperty('--cb');
     w.className = 'w ' + mode + (isRunning ? ' run' : '') + ' t' + idx + ' sz' + currentSize;
     swatches.forEach(function(s) { s.classList.toggle('active', parseInt(s.dataset.t) === idx); });
+    sColorDot.style.background = '';
+    sColorDot.classList.remove('active');
   }
 
   var szBtns = shadow.querySelectorAll('.s-sz[data-sz]');
@@ -459,8 +504,66 @@
     shadow.getElementById('s-long-lbl').textContent       = T('longBreakLbl');
     shadow.getElementById('s-long-dur-lbl').textContent   = T('longBreakDurLbl');
     sBlkInp.placeholder                                   = T('blockPlaceholder');
+    shadow.getElementById('s-opacity-lbl').textContent    = T('opacity');
+    shadow.getElementById('s-radius-lbl').textContent     = T('radius');
+    shadow.getElementById('s-clock-lbl').textContent      = T('clockLbl');
+    shadow.getElementById('s-show-sess-lbl').textContent  = T('showSess');
     renderBlacklist();
     render();
+  }
+
+  // ── Nuevas opciones de apariencia ─────────────────────────────────────────
+  function refreshOpacity() {
+    w.style.opacity = (currentlyIdle ? currentOpacity * 0.65 / 100 : currentOpacity / 100).toFixed(2);
+  }
+  function applyOpacity(val) {
+    currentOpacity = val;
+    sOpacityVal.textContent = val + '%';
+    sOpacity.value = val;
+    refreshOpacity();
+  }
+  function applyRadius(idx) {
+    currentRadius = idx;
+    w.style.borderRadius = ['8px', '20px', '36px'][idx];
+    sBrBtns.forEach(function(b) { b.classList.toggle('active', parseInt(b.dataset.br) === idx); });
+  }
+  function applyClockFmt(fmt) {
+    clockFmt = fmt;
+    clock.style.display = fmt === 'off' ? 'none' : '';
+    sFmtBtns.forEach(function(b) { b.classList.toggle('active', b.dataset.fmt === fmt); });
+    updateClock();
+  }
+  function updateClock() {
+    if (clockFmt === 'off') return;
+    var now = new Date();
+    var h = now.getHours(), m = now.getMinutes();
+    if (clockFmt === '12') {
+      var ampm = h >= 12 ? 'PM' : 'AM';
+      h = h % 12 || 12;
+      clock.textContent = h + ':' + String(m).padStart(2,'0') + ' ' + ampm;
+    } else {
+      clock.textContent = String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0');
+    }
+  }
+  function applyShowSess(show) {
+    showSessionInfo = show;
+    inf.style.display = show ? '' : 'none';
+    sShowSess.checked = show;
+  }
+  function applyAccent(color) {
+    customAccent = color;
+    if (color) {
+      w.style.setProperty('--cw', color);
+      w.style.setProperty('--cb', 'color-mix(in srgb, ' + color + ', #fff 30%)');
+      sColorDot.style.background = color;
+      sColorDot.classList.add('active');
+      swatches.forEach(function(s) { s.classList.remove('active'); });
+    } else {
+      w.style.removeProperty('--cw');
+      w.style.removeProperty('--cb');
+      sColorDot.style.background = '';
+      sColorDot.classList.remove('active');
+    }
   }
 
   // ── Imagen de fondo ────────────────────────────────────────────────────────
@@ -590,7 +693,10 @@
       work: Math.round(WORK / 60), break: Math.round(BREAK / 60),
       theme: currentTheme, size: currentSize, lang: lang,
       alarm: alarmEnabled, longBreak: longBreakEnabled,
-      longBreakDur: Math.round(LONG_BREAK / 60)
+      longBreakDur: Math.round(LONG_BREAK / 60),
+      opacity: currentOpacity, radius: currentRadius,
+      clockFmt: clockFmt, showSess: showSessionInfo,
+      accent: customAccent
     }});
   }
 
@@ -629,6 +735,13 @@
     sLongRow.style.display = longBreakEnabled ? '' : 'none';
     renderBlacklist();
     szBtns.forEach(function(b) { b.classList.toggle('active', parseInt(b.dataset.sz) === currentSize); });
+    sBrBtns.forEach(function(b) { b.classList.toggle('active', parseInt(b.dataset.br) === currentRadius); });
+    sFmtBtns.forEach(function(b) { b.classList.toggle('active', b.dataset.fmt === clockFmt); });
+    sOpacity.value = currentOpacity;
+    sOpacityVal.textContent = currentOpacity + '%';
+    sShowSess.checked = showSessionInfo;
+    if (customAccent) { sAccent.value = customAccent; sColorDot.style.background = customAccent; sColorDot.classList.add('active'); }
+    else { sColorDot.style.background = ''; sColorDot.classList.remove('active'); }
     if (currentBg) { sThumb.style.display = 'block'; sClearBg.style.display = ''; }
     main.style.display = 'none';
     sett.style.display = '';
@@ -739,6 +852,40 @@
     chrome.storage.local.remove('pomoBg');
   });
 
+  sOpacity.addEventListener('input', function(e) {
+    e.stopPropagation();
+    applyOpacity(parseInt(sOpacity.value));
+    saveSettings();
+  });
+
+  sBrBtns.forEach(function(b) {
+    b.addEventListener('click', function(e) {
+      e.stopPropagation();
+      applyRadius(parseInt(b.dataset.br));
+      saveSettings();
+    });
+  });
+
+  sFmtBtns.forEach(function(b) {
+    b.addEventListener('click', function(e) {
+      e.stopPropagation();
+      applyClockFmt(b.dataset.fmt);
+      saveSettings();
+    });
+  });
+
+  sShowSess.addEventListener('change', function(e) {
+    e.stopPropagation();
+    applyShowSess(sShowSess.checked);
+    saveSettings();
+  });
+
+  sAccent.addEventListener('input', function(e) {
+    e.stopPropagation();
+    applyAccent(sAccent.value);
+    saveSettings();
+  });
+
   sSave.addEventListener('click', function(e) {
     e.stopPropagation();
     var nw = Math.max(1,  Math.min(99, parseInt(sWork.value)    || 25));
@@ -765,6 +912,11 @@
       if (data.pomoSettings.alarm != null) { alarmEnabled = data.pomoSettings.alarm; alarmChk.checked = alarmEnabled; }
       if (data.pomoSettings.longBreak != null) longBreakEnabled = data.pomoSettings.longBreak;
       if (data.pomoSettings.longBreakDur) LONG_BREAK = data.pomoSettings.longBreakDur * 60;
+      if (data.pomoSettings.opacity != null) applyOpacity(data.pomoSettings.opacity);
+      if (data.pomoSettings.radius  != null) applyRadius(data.pomoSettings.radius);
+      if (data.pomoSettings.clockFmt)        applyClockFmt(data.pomoSettings.clockFmt);
+      if (data.pomoSettings.showSess != null) applyShowSess(data.pomoSettings.showSess);
+      if (data.pomoSettings.accent)           applyAccent(data.pomoSettings.accent);
     }
     loadState(data.pomoState);
     if (data.pomoBg) applyBg(data.pomoBg);
@@ -804,6 +956,12 @@
         if (s.longBreak != null) longBreakEnabled = s.longBreak;
         if (s.longBreakDur) LONG_BREAK = s.longBreakDur * 60;
         applyTheme(s.theme||0); applySize(currentSize); render();
+        if (s.opacity != null) applyOpacity(s.opacity);
+        if (s.radius  != null) applyRadius(s.radius);
+        if (s.clockFmt)        applyClockFmt(s.clockFmt);
+        if (s.showSess != null) applyShowSess(s.showSess);
+        if (s.accent)          applyAccent(s.accent);
+        else if ('accent' in s && !s.accent) applyAccent(null);
       }
     }
   });
@@ -812,6 +970,7 @@
   var poll = setInterval(function() {
     if (!chrome.runtime || !chrome.runtime.id) { clearInterval(poll); host.remove(); return; }
     render();
+    updateClock();
     if (sett.style.display !== 'none') renderStats();
   }, 500);
 
@@ -897,11 +1056,12 @@
     var r  = host.getBoundingClientRect();
     var dx = Math.max(0, Math.max(r.left - e.clientX, e.clientX - r.right));
     var dy = Math.max(0, Math.max(r.top  - e.clientY, e.clientY - r.bottom));
-    w.style.opacity = Math.sqrt(dx * dx + dy * dy) > 80 ? '0.65' : '1';
+    var idle = Math.sqrt(dx * dx + dy * dy) > 80;
+    if (idle !== currentlyIdle) { currentlyIdle = idle; refreshOpacity(); }
   });
 
   document.addEventListener('mouseleave', function() {
-    if (host.style.display !== 'none') w.style.opacity = '0.65';
+    if (host.style.display !== 'none') { currentlyIdle = true; refreshOpacity(); }
   });
 
   document.addEventListener('mouseup', function() {
