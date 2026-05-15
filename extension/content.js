@@ -195,7 +195,8 @@
     .s-inp:focus { border-color:rgb(from var(--cw) r g b/.8); box-shadow:0 0 0 2px rgb(from var(--cw) r g b/.2); }
     .s-unit { font-size:10px; color:rgba(255,255,255,.28); }
     .s-sep { height:1px; background:rgba(255,255,255,.06); }
-    .s-themes { display:flex; align-items:center; justify-content:space-between; }
+    .s-themes { display:flex; flex-direction:column; gap:6px; }
+    .s-themes-top { display:flex; align-items:center; justify-content:space-between; }
     .s-swatches { display:flex; gap:8px; }
     .swatch { width:20px; height:20px; border-radius:50%; cursor:pointer; border:2px solid transparent; transition:transform .15s,border-color .2s; flex-shrink:0; }
     .swatch:hover { transform:scale(1.2); }
@@ -211,9 +212,13 @@
     .s-color-dot { width:18px; height:18px; border-radius:50%; border:2px solid rgba(255,255,255,.18); cursor:pointer; transition:transform .15s,border-color .2s; background:conic-gradient(#ff6b6b,#fbbf24,#4dd9ac,#60a5fa,#c084fc,#ff6b6b); flex-shrink:0; }
     .s-color-dot:hover { transform:scale(1.2); border-color:rgba(255,255,255,.5); }
     .s-color-dot.active { border-color:rgba(255,255,255,.7); transform:scale(1.1); }
-    .s-br { width:22px; height:22px; padding:0; }
+    .s-br { width:22px; height:22px; padding:0; display:flex; align-items:center; justify-content:center; }
     .s-br[data-br="0"] { border-radius:3px; }
     .s-br[data-br="2"] { border-radius:50%; }
+    .s-br::before { content:''; display:block; background:currentColor; opacity:.6; }
+    .s-br[data-br="0"]::before { width:10px; height:10px; border-radius:2px; }
+    .s-br[data-br="1"]::before { width:10px; height:10px; border-radius:4px; }
+    .s-br[data-br="2"]::before { width:10px; height:10px; border-radius:50%; }
     .s-slider { -webkit-appearance:none; appearance:none; width:100%; height:3px; background:rgba(255,255,255,.1); border-radius:3px; outline:none; cursor:pointer; margin:0; }
     .s-slider::-webkit-slider-thumb { -webkit-appearance:none; width:14px; height:14px; border-radius:50%; background:var(--cw); cursor:pointer; box-shadow:0 0 6px rgba(0,0,0,.5); }
     .s-slider::-moz-range-thumb { width:14px; height:14px; border-radius:50%; background:var(--cw); cursor:pointer; border:none; }
@@ -310,7 +315,7 @@
           <div class="s-row" id="s-long-row" style="display:none"><span class="s-lbl" id="s-long-dur-lbl">Duración</span><div class="s-inp-wrap"><input class="s-inp" id="s-long-dur" type="number" min="5" max="60" value="15"><span class="s-unit">min</span></div></div>
         </div>
         <div class="s-panel" id="s-panel-appearance" style="display:none">
-          <div class="s-themes"><span class="s-lbl" id="s-theme-lbl">Tema</span><div style="display:flex;align-items:center;gap:7px"><div class="s-swatches"><div class="swatch t0 active" data-t="0"></div><div class="swatch t1" data-t="1"></div><div class="swatch t2" data-t="2"></div><div class="swatch t3" data-t="3"></div><div class="swatch t4" data-t="4"></div><div class="swatch t5" data-t="5"></div></div><label class="s-color-label" title="Custom"><input type="color" id="s-accent" value="#ff6b6b"><div class="s-color-dot" id="s-color-dot"></div></label></div></div>
+          <div class="s-themes"><div class="s-themes-top"><span class="s-lbl" id="s-theme-lbl">Tema</span><label class="s-color-label" title="Custom"><input type="color" id="s-accent" value="#ff6b6b"><div class="s-color-dot" id="s-color-dot"></div></label></div><div class="s-swatches"><div class="swatch t0 active" data-t="0"></div><div class="swatch t1" data-t="1"></div><div class="swatch t2" data-t="2"></div><div class="swatch t3" data-t="3"></div><div class="swatch t4" data-t="4"></div><div class="swatch t5" data-t="5"></div></div></div>
           <div class="s-row"><span class="s-lbl" id="s-size-lbl">Tamaño</span><div class="s-sizes"><button class="s-sz" data-sz="0">S</button><button class="s-sz active" data-sz="1">M</button><button class="s-sz" data-sz="2">L</button></div></div>
           <div class="s-row"><span class="s-lbl" id="s-radius-lbl">Bordes</span><div class="s-sizes"><button class="s-sz s-br" data-br="0"></button><button class="s-sz s-br active" data-br="1"></button><button class="s-sz s-br" data-br="2"></button></div></div>
           <div class="s-opacity-row"><div class="s-row"><span class="s-lbl" id="s-opacity-lbl">Opacidad</span><span class="s-stat-v" id="s-opacity-val">100%</span></div><input type="range" class="s-slider" id="s-opacity" min="30" max="100" value="100" step="5"></div>
@@ -514,7 +519,9 @@
 
   // ── Nuevas opciones de apariencia ─────────────────────────────────────────
   function refreshOpacity() {
-    w.style.opacity = (currentlyIdle ? currentOpacity * 0.65 / 100 : currentOpacity / 100).toFixed(2);
+    var settOpen = sett.style.display !== 'none';
+    var fade = !settOpen && currentlyIdle;
+    w.style.opacity = (fade ? currentOpacity * 0.65 / 100 : currentOpacity / 100).toFixed(2);
   }
   function applyOpacity(val) {
     currentOpacity = val;
@@ -746,6 +753,7 @@
     main.style.display = 'none';
     sett.style.display = '';
     gbtn.style.display = 'none';
+    refreshOpacity();
     switchTab(currentTab);
     applyLang(lang);
     updateStats();
@@ -754,6 +762,7 @@
     main.style.display = '';
     sett.style.display = 'none';
     gbtn.style.display = '';
+    refreshOpacity();
   }
 
   function switchTab(name) {
