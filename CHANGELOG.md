@@ -9,6 +9,12 @@ Formato: [Unreleased] acumula cambios en desarrollo. Al publicar, renómbralo co
 _Cambios desde v1.2.0 — aún no publicados_
 
 ### Added
+- 2 nuevos temas: Forest (verde) y Ember (rosa→naranja), total 6 temas
+- Color de acento personalizado (color picker) — sobreescribe los colores del tema
+- Slider de opacidad del widget (30–100%), respeta el fade de proximidad proporcionalmente
+- Toggle de bordes: sharp / rounded / pill
+- Reloj en tiempo real con formato 12h / 24h / desactivado
+- Toggle para mostrar/ocultar la info de sesión
 
 ### Fixed
 
@@ -60,3 +66,5 @@ _Cambios desde v1.2.0 — aún no publicados_
 - Arrastrable a cualquier esquina
 - Sincronización entre pestañas
 - Manifest V3 · Shadow DOM · Sin dependencias
+
+---
