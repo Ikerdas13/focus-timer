@@ -358,7 +358,7 @@
           <div class="s-themes"><div class="s-themes-top"><span class="s-lbl" id="s-theme-lbl">Tema</span><label class="s-color-label" title="Custom"><input type="color" id="s-accent" value="#ff6b6b"><div class="s-color-dot" id="s-color-dot"></div></label></div><div class="s-swatches"><div class="swatch t0 active" data-t="0"></div><div class="swatch t1" data-t="1"></div><div class="swatch t2" data-t="2"></div><div class="swatch t3" data-t="3"></div><div class="swatch t4" data-t="4"></div><div class="swatch t5" data-t="5"></div></div></div>
           <div class="s-row"><span class="s-lbl" id="s-size-lbl">Tamaño</span><div class="s-sizes"><button class="s-sz" data-sz="0">S</button><button class="s-sz active" data-sz="1">M</button><button class="s-sz" data-sz="2">L</button></div></div>
           <div class="s-row"><span class="s-lbl" id="s-radius-lbl">Bordes</span><div class="s-sizes"><button class="s-sz s-br" data-br="0"></button><button class="s-sz s-br active" data-br="1"></button><button class="s-sz s-br" data-br="2"></button></div></div>
-          <div class="s-opacity-row"><div class="s-row"><span class="s-lbl" id="s-opacity-lbl">Opacidad</span><span class="s-stat-v" id="s-opacity-val">100%</span></div><input type="range" class="s-slider" id="s-opacity" min="30" max="100" value="100" step="5"></div>
+          <div class="s-opacity-row"><div class="s-row"><span class="s-lbl" id="s-opacity-lbl">Opacidad</span><span class="s-stat-v" id="s-opacity-val">100%</span></div><input type="range" class="s-slider" id="s-opacity" min="0" max="100" value="100" step="5"></div>
           <div class="s-row"><span class="s-lbl" id="s-clock-lbl">Reloj</span><div class="s-sizes"><button class="s-sz s-fmt active" data-fmt="off">—</button><button class="s-sz s-fmt" data-fmt="24">24h</button><button class="s-sz s-fmt" data-fmt="12">12h</button></div></div>
           <div class="s-sep"></div>
           <div class="s-row"><span class="s-lbl" id="s-show-sess-lbl">Info sesión</span><label class="alarm-sw"><input type="checkbox" id="s-show-sess" checked><div class="alarm-trk"></div></label></div>
@@ -561,7 +561,7 @@
   function refreshOpacity() {
     var settOpen = sett.style.display !== 'none';
     var shouldFade = currentlyIdle && !settOpen;
-    w.style.opacity = shouldFade ? (currentOpacity / 100).toFixed(2) : '1';
+    w.style.opacity = shouldFade ? (0.5 + currentOpacity / 200).toFixed(2) : '1';
   }
   function applyOpacity(val) {
     currentOpacity = val;
