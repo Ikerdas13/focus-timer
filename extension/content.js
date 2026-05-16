@@ -52,7 +52,7 @@
       blockMsg: 'Termina la sesión para acceder durante el descanso',
       tabSession: 'Sesión', tabAppearance: 'Aspecto', tabStats: 'Stats', tabBlocks: 'Bloqueos',
       ratingMsg: '¿Te está ayudando?', ratingCta: 'Valórala ⭐',
-      opacity: 'Opacidad', radius: 'Bordes', clockLbl: 'Reloj', showSess: 'Info sesión'
+      opacity: 'Opacidad', radius: 'Bordes del widget', clockLbl: 'Reloj', showSess: 'Info sesión'
     },
     en: {
       work: 'WORK', brk: 'BREAK',
@@ -73,7 +73,7 @@
       blockMsg: 'Finish the session to access this during the break',
       tabSession: 'Session', tabAppearance: 'Style', tabStats: 'Stats', tabBlocks: 'Blocks',
       ratingMsg: 'Is it helping you?', ratingCta: 'Rate it ⭐',
-      opacity: 'Opacity', radius: 'Corners', clockLbl: 'Clock', showSess: 'Session info'
+      opacity: 'Opacity', radius: 'Widget corners', clockLbl: 'Clock', showSess: 'Session info'
     }
   };
   function T(k) { return STRINGS[lang][k]; }
@@ -247,8 +247,10 @@
     /* S: smaller so 3 buttons fit in the narrower circle */
     .w.br2.sz0 .btn { width:26px; height:26px; }
     .w.br2.sz0 .playbtn { width:36px; height:36px; }
-    /* Settings open in circle mode → temporarily rectangular */
-    .w.br2.sett-open { border-radius:20px; height:auto; display:block; }
+    /* Settings open → always rounded, regardless of selected border mode */
+    .w.sett-open { border-radius:20px; }
+    /* Circle mode also needs height and display restored */
+    .w.br2.sett-open { height:auto; display:block; }
     .w.br2.sett-open .hdr { background:rgba(255,255,255,.02); border-bottom:1px solid rgba(255,255,255,.05); padding:10px 10px 9px; }
     /* Timer font scaled down to avoid horizontal clipping */
     .w.br2 .time { font-size:42px; letter-spacing:-1.5px; padding:4px 0 2px; }
