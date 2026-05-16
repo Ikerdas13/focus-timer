@@ -30,6 +30,7 @@
   var showSessionInfo = true;
   var customAccent    = null;
   var currentlyIdle   = false;
+  var settVisible     = false;
 
   var STRINGS = {
     es: {
@@ -244,6 +245,9 @@
     /* S: smaller so 3 buttons fit in the narrower circle */
     .w.br2.sz0 .btn { width:26px; height:26px; }
     .w.br2.sz0 .playbtn { width:36px; height:36px; }
+    /* Settings open in circle mode → temporarily rectangular */
+    .w.br2.sett-open { border-radius:20px; height:auto; display:block; }
+    .w.br2.sett-open .hdr { background:rgba(255,255,255,.02); border-bottom:1px solid rgba(255,255,255,.05); padding:10px 10px 9px; }
     /* Timer font scaled down to avoid horizontal clipping */
     .w.br2 .time { font-size:42px; letter-spacing:-1.5px; padding:4px 0 2px; }
     .w.br2.sz0 .time { font-size:32px; letter-spacing:-1px; padding:2px 0 1px; }
@@ -497,7 +501,7 @@
     customAccent = null;
     w.style.removeProperty('--cw');
     w.style.removeProperty('--cb');
-    w.className = 'w ' + mode + (isRunning ? ' run' : '') + ' t' + idx + ' sz' + currentSize + ' br' + currentRadius;
+    w.className = 'w ' + mode + (isRunning ? ' run' : '') + ' t' + idx + ' sz' + currentSize + ' br' + currentRadius + (settVisible ? ' sett-open' : '');
     swatches.forEach(function(s) { s.classList.toggle('active', parseInt(s.dataset.t) === idx); });
     sColorDot.style.background = '';
     sColorDot.classList.remove('active');
@@ -506,7 +510,7 @@
   var szBtns = shadow.querySelectorAll('.s-sz[data-sz]');
   function applySize(sz) {
     currentSize = sz;
-    w.className = 'w ' + mode + (isRunning ? ' run' : '') + ' t' + currentTheme + ' sz' + sz + ' br' + currentRadius;
+    w.className = 'w ' + mode + (isRunning ? ' run' : '') + ' t' + currentTheme + ' sz' + sz + ' br' + currentRadius + (settVisible ? ' sett-open' : '');
     szBtns.forEach(function(b) { b.classList.toggle('active', parseInt(b.dataset.sz) === sz); });
   }
 
@@ -691,7 +695,7 @@
     var tl = calcTimeLeft();
     t.textContent   = fmt(tl);
     bar.style.width = (tl / totalFor(mode) * 100) + '%';
-    w.className     = 'w ' + mode + (isRunning ? ' run' : '') + ' t' + currentTheme + ' sz' + currentSize + ' br' + currentRadius;
+    w.className     = 'w ' + mode + (isRunning ? ' run' : '') + ' t' + currentTheme + ' sz' + currentSize + ' br' + currentRadius + (settVisible ? ' sett-open' : '');
     lbl.textContent = mode === 'work' ? T('work') : (isLongBreak ? T('longBreak') : T('brk'));
     pi.style.display  = isRunning ? 'none'  : 'block';
     pai.style.display = isRunning ? 'block' : 'none';
@@ -765,6 +769,7 @@
 
   // ── Panel de ajustes ───────────────────────────────────────────────────────
   function openSettings() {
+    settVisible = true;
     sWork.value  = Math.round(WORK  / 60);
     sBreak.value = Math.round(BREAK / 60);
     sLongChk.checked = longBreakEnabled;
@@ -789,9 +794,11 @@
     updateStats();
   }
   function closeSettings() {
+    settVisible = false;
     main.style.display = '';
     sett.style.display = 'none';
     gbtn.style.display = '';
+    render();
     refreshOpacity();
   }
 
