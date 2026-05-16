@@ -230,6 +230,9 @@
     .w.br2 .hdr { background:transparent; border-bottom:none; padding:18px 28px 0; display:grid; grid-template-columns:1fr auto 1fr; align-items:center; }
     .w.br2 .badge { grid-column:2; }
     .w.br2 .hdr-r { grid-column:3; justify-self:end; }
+    /* Size-specific padding: larger circle = elements sit closer to the edge, need more inset */
+    .w.br2.sz0 .hdr { padding:14px 22px 0; }
+    .w.br2.sz2 .hdr { padding:28px 48px 0; }
     /* Main fills the rest, all content centred */
     .w.br2 #main { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:0 0 14px; }
     /* Hide elements that don't fit in a circle */
