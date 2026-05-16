@@ -225,18 +225,29 @@
     .w.br2 { border-radius:50%; height:204px; display:flex; flex-direction:column; }
     .w.br2.sz0 { height:172px; }
     .w.br2.sz2 { height:246px; }
-    .w.br2 .hdr { background:transparent; border-bottom:none; padding:12px 16px 2px; justify-content:center; }
-    .w.br2 .hdr-r { display:none; }
-    .w.br2 #main { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; padding-bottom:10px; }
+    /* Header: tight padding so badge + gear + × stay inside the circle */
+    .w.br2 .hdr { background:transparent; border-bottom:none; padding:18px 32px 0; }
+    /* Main fills the rest, all content centred */
+    .w.br2 #main { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:0 0 14px; }
+    /* Hide elements that don't fit in a circle */
     .w.br2 .info { display:none !important; }
     .w.br2 #clock { display:none !important; }
     .w.br2 .bar-wrap { display:none; }
-    .w.br2 .btns { padding:8px 0 0; }
-    .w.br2 .btn:not(.playbtn) { display:none; }
     .w.br2 .new-cyc { display:none; }
     .w.br2 .alarm-row { display:none; }
     .w.br2 .rating-bar { display:none; }
     .w.br2 .credit { display:none; }
+    /* All 3 action buttons visible, compact */
+    .w.br2 .btns { padding:10px 0 0; gap:8px; }
+    .w.br2 .btn { width:30px; height:30px; }
+    .w.br2 .playbtn { width:42px; height:42px; border-radius:50%; }
+    /* S: smaller so 3 buttons fit in the narrower circle */
+    .w.br2.sz0 .btn { width:26px; height:26px; }
+    .w.br2.sz0 .playbtn { width:36px; height:36px; }
+    /* Timer font scaled down to avoid horizontal clipping */
+    .w.br2 .time { font-size:42px; letter-spacing:-1.5px; padding:4px 0 2px; }
+    .w.br2.sz0 .time { font-size:32px; letter-spacing:-1px; padding:2px 0 1px; }
+    .w.br2.sz2 .time { font-size:54px; letter-spacing:-2px; padding:6px 0 4px; }
     .s-slider { -webkit-appearance:none; appearance:none; width:100%; height:3px; background:rgba(255,255,255,.1); border-radius:3px; outline:none; cursor:pointer; margin:0; }
     .s-slider::-webkit-slider-thumb { -webkit-appearance:none; width:14px; height:14px; border-radius:50%; background:var(--cw); cursor:pointer; box-shadow:0 0 6px rgba(0,0,0,.5); }
     .s-slider::-moz-range-thumb { width:14px; height:14px; border-radius:50%; background:var(--cw); cursor:pointer; border:none; }
