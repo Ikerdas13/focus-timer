@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" id="root-html">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -41,8 +41,15 @@
       backdrop-filter: blur(12px); z-index: 100;
     }
     .nav-brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 15px; color: var(--text); }
+    .nav-right { display: flex; align-items: center; gap: 16px; }
     .nav-link { font-size: 13px; color: var(--muted); transition: color .2s; }
     .nav-link:hover { color: var(--text); text-decoration: none; }
+
+    /* ── Language switcher ── */
+    .lang-sw { display: flex; background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.09); border-radius: 8px; overflow: hidden; }
+    .lang-opt { background: none; border: none; color: rgba(255,255,255,.35); font-size: 11px; font-weight: 700; letter-spacing: .08em; padding: 5px 11px; cursor: pointer; font-family: inherit; transition: all .2s; }
+    .lang-opt:hover { color: rgba(255,255,255,.7); }
+    .lang-opt.active { background: rgba(255,255,255,.13); color: #fff; }
 
     /* ── Content ── */
     .page {
@@ -133,54 +140,60 @@
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff6b6b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
       Focus Timer
     </a>
-    <a href="/" class="nav-link">← Back to home</a>
+    <div class="nav-right">
+      <div class="lang-sw">
+        <button class="lang-opt" id="lang-en" onclick="setLang('en')">EN</button>
+        <button class="lang-opt" id="lang-es" onclick="setLang('es')">ES</button>
+      </div>
+      <a href="/" class="nav-link" data-i18n="nav_back">← Back to home</a>
+    </div>
   </nav>
 
   <div class="page">
-    <div class="page-label">Legal</div>
-    <h1>Privacy Policy</h1>
-    <p class="updated">Last updated: May 2026</p>
+    <div class="page-label" data-i18n="page_label">Legal</div>
+    <h1 data-i18n="page_h1">Privacy Policy</h1>
+    <p class="updated" data-i18n="page_updated">Last updated: May 2026</p>
 
     <div class="card">
 
       <div class="highlight">
         <div class="highlight-icon">🔒</div>
-        <div>Focus Timer does <strong>not collect, transmit, or share any personal data</strong>. Everything stays on your device.</div>
+        <div data-i18n="highlight">Focus Timer does <strong>not collect, transmit, or share any personal data</strong>. Everything stays on your device.</div>
       </div>
 
-      <h2>What we store</h2>
-      <p>All data created by this extension is saved exclusively in your local browser using <code style="color:var(--red);font-size:12px;background:rgba(255,107,107,.08);padding:2px 6px;border-radius:4px">chrome.storage.local</code>. This data never leaves your device and is not accessible to the developer or any third party.</p>
+      <h2 data-i18n="storage_h2">What we store</h2>
+      <p data-i18n="storage_p">All data created by this extension is saved exclusively in your local browser using <code style="color:var(--red);font-size:12px;background:rgba(255,107,107,.08);padding:2px 6px;border-radius:4px">chrome.storage.local</code>. This data never leaves your device and is not accessible to the developer or any third party.</p>
 
       <table>
-        <tr><th>Key</th><th>What it contains</th></tr>
-        <tr><td>pomoState</td><td>Timer mode, elapsed time, session count, long-break flag</td></tr>
-        <tr><td>pomoSettings</td><td>Work/break durations, custom colors, size, language, alarm, long break, opacity</td></tr>
-        <tr><td>pomoBg</td><td>Custom background image (compressed JPEG, max 640 px)</td></tr>
-        <tr><td>pomoStats</td><td>Daily study minutes (date-keyed, auto-pruned after 1 year)</td></tr>
-        <tr><td>pomoVisible</td><td>Whether the widget is shown or hidden</td></tr>
-        <tr><td>pomoPosition</td><td>Widget corner (top-left, top-right, bottom-left, bottom-right)</td></tr>
-        <tr><td>pomoBlacklist</td><td>List of domains blocked during work sessions</td></tr>
-        <tr><td>pomoRatingDismissed</td><td>Whether the rating prompt has been dismissed</td></tr>
+        <tr><th data-i18n="tbl_th1">Key</th><th data-i18n="tbl_th2">What it contains</th></tr>
+        <tr><td>pomoState</td><td data-i18n="td1">Timer mode, elapsed time, session count, long-break flag</td></tr>
+        <tr><td>pomoSettings</td><td data-i18n="td2">Work/break durations, custom colors, size, language, alarm, long break, opacity</td></tr>
+        <tr><td>pomoBg</td><td data-i18n="td3">Custom background image (compressed JPEG, max 640 px)</td></tr>
+        <tr><td>pomoStats</td><td data-i18n="td4">Daily study minutes (date-keyed, auto-pruned after 1 year)</td></tr>
+        <tr><td>pomoVisible</td><td data-i18n="td5">Whether the widget is shown or hidden</td></tr>
+        <tr><td>pomoPosition</td><td data-i18n="td6">Widget corner (top-left, top-right, bottom-left, bottom-right)</td></tr>
+        <tr><td>pomoBlacklist</td><td data-i18n="td7">List of domains blocked during work sessions</td></tr>
+        <tr><td>pomoRatingDismissed</td><td data-i18n="td8">Whether the rating prompt has been dismissed</td></tr>
       </table>
 
-      <h2>No analytics, no tracking</h2>
-      <p>Focus Timer does not use any analytics service, tracking pixel, or external API. There are no servers. The extension runs entirely inside your browser.</p>
+      <h2 data-i18n="analytics_h2">No analytics, no tracking</h2>
+      <p data-i18n="analytics_p">Focus Timer does not use any analytics service, tracking pixel, or external API. There are no servers. The extension runs entirely inside your browser.</p>
 
-      <h2>Permissions</h2>
-      <p>The extension requests the following Chrome permissions:</p>
+      <h2 data-i18n="perms_h2">Permissions</h2>
+      <p data-i18n="perms_p">The extension requests the following Chrome permissions:</p>
       <table>
-        <tr><th>Permission</th><th>Why it's needed</th></tr>
-        <tr><td>storage</td><td>Save your settings and study statistics locally</td></tr>
-        <tr><td>scripting</td><td>Inject the floating timer widget into web pages</td></tr>
-        <tr><td>tabs</td><td>Sync the timer across all open tabs</td></tr>
-        <tr><td>notifications</td><td>Show desktop alerts when a session ends</td></tr>
-        <tr><td>host_permissions</td><td>Required to run the content script on http/https pages</td></tr>
+        <tr><th data-i18n="perms_th1">Permission</th><th data-i18n="perms_th2">Why it's needed</th></tr>
+        <tr><td>storage</td><td data-i18n="perm1">Save your settings and study statistics locally</td></tr>
+        <tr><td>scripting</td><td data-i18n="perm2">Inject the floating timer widget into web pages</td></tr>
+        <tr><td>tabs</td><td data-i18n="perm3">Sync the timer across all open tabs</td></tr>
+        <tr><td>notifications</td><td data-i18n="perm4">Show desktop alerts when a session ends</td></tr>
+        <tr><td>host_permissions</td><td data-i18n="perm5">Required to run the content script on http/https pages</td></tr>
       </table>
 
-      <h2>Data deletion</h2>
-      <p>You can delete all stored data at any time by going to <strong>chrome://extensions</strong>, finding Focus Timer, and clicking <strong>Remove</strong>. Alternatively, use Chrome's "Clear browsing data" to wipe extension storage.</p>
+      <h2 data-i18n="delete_h2">Data deletion</h2>
+      <p data-i18n="delete_p">You can delete all stored data at any time by going to <strong>chrome://extensions</strong>, finding Focus Timer, and clicking <strong>Remove</strong>. Alternatively, use Chrome's "Clear browsing data" to wipe extension storage.</p>
 
-      <div class="contact">
+      <div class="contact" data-i18n="contact">
         Questions? Contact: <a href="mailto:ikergg1307@gmail.com">ikergg1307@gmail.com</a>
       </div>
 
@@ -188,13 +201,110 @@
   </div>
 
   <footer>
-    <div>© 2026 Focus Timer · Designed by <strong style="color:rgba(255,255,255,.6)">Iker G.</strong></div>
+    <div data-i18n="footer_copy">© 2026 Focus Timer · Designed by <strong style="color:rgba(255,255,255,.6)">Iker G.</strong></div>
     <div style="display:flex;gap:24px">
       <a href="https://chromewebstore.google.com/detail/focus-timer-%E2%80%94-pomodoro-pr/gdidicppaicpkamdlnljeakdefkknikh">Chrome Web Store</a>
-      <a href="privacy">Privacy Policy</a>
+      <a href="privacy" data-i18n="footer_privacy">Privacy Policy</a>
       <a href="https://github.com/Ikerdas13/focus-timer">GitHub</a>
     </div>
   </footer>
+
+  <script>
+  (function () {
+    var S = {
+      en: {
+        nav_back: '← Back to home',
+        page_label: 'Legal',
+        page_h1: 'Privacy Policy',
+        page_updated: 'Last updated: May 2026',
+        highlight: 'Focus Timer does <strong>not collect, transmit, or share any personal data</strong>. Everything stays on your device.',
+        storage_h2: 'What we store',
+        storage_p: 'All data created by this extension is saved exclusively in your local browser using <code style="color:var(--red);font-size:12px;background:rgba(255,107,107,.08);padding:2px 6px;border-radius:4px">chrome.storage.local</code>. This data never leaves your device and is not accessible to the developer or any third party.',
+        tbl_th1: 'Key',
+        tbl_th2: 'What it contains',
+        td1: 'Timer mode, elapsed time, session count, long-break flag',
+        td2: 'Work/break durations, custom colors, size, language, alarm, long break, opacity',
+        td3: 'Custom background image (compressed JPEG, max 640 px)',
+        td4: 'Daily study minutes (date-keyed, auto-pruned after 1 year)',
+        td5: 'Whether the widget is shown or hidden',
+        td6: 'Widget corner (top-left, top-right, bottom-left, bottom-right)',
+        td7: 'List of domains blocked during work sessions',
+        td8: 'Whether the rating prompt has been dismissed',
+        analytics_h2: 'No analytics, no tracking',
+        analytics_p: 'Focus Timer does not use any analytics service, tracking pixel, or external API. There are no servers. The extension runs entirely inside your browser.',
+        perms_h2: 'Permissions',
+        perms_p: 'The extension requests the following Chrome permissions:',
+        perms_th1: 'Permission',
+        perms_th2: "Why it's needed",
+        perm1: 'Save your settings and study statistics locally',
+        perm2: 'Inject the floating timer widget into web pages',
+        perm3: 'Sync the timer across all open tabs',
+        perm4: 'Show desktop alerts when a session ends',
+        perm5: 'Required to run the content script on http/https pages',
+        delete_h2: 'Data deletion',
+        delete_p: 'You can delete all stored data at any time by going to <strong>chrome://extensions</strong>, finding Focus Timer, and clicking <strong>Remove</strong>. Alternatively, use Chrome\'s "Clear browsing data" to wipe extension storage.',
+        contact: 'Questions? Contact: <a href="mailto:ikergg1307@gmail.com">ikergg1307@gmail.com</a>',
+        footer_copy: '© 2026 Focus Timer · Designed by <strong style="color:rgba(255,255,255,.6)">Iker G.</strong>',
+        footer_privacy: 'Privacy Policy'
+      },
+      es: {
+        nav_back: '← Volver al inicio',
+        page_label: 'Legal',
+        page_h1: 'Política de Privacidad',
+        page_updated: 'Última actualización: mayo 2026',
+        highlight: 'Focus Timer <strong>no recopila, transmite ni comparte ningún dato personal</strong>. Todo permanece en tu dispositivo.',
+        storage_h2: 'Qué guardamos',
+        storage_p: 'Todos los datos creados por esta extensión se guardan exclusivamente en tu navegador local usando <code style="color:var(--red);font-size:12px;background:rgba(255,107,107,.08);padding:2px 6px;border-radius:4px">chrome.storage.local</code>. Estos datos nunca salen de tu dispositivo y no son accesibles para el desarrollador ni para terceros.',
+        tbl_th1: 'Clave',
+        tbl_th2: 'Qué contiene',
+        td1: 'Modo, tiempo transcurrido, sesiones, flag descanso largo',
+        td2: 'Duraciones, colores personalizados, tamaño, idioma, alarma, descanso largo, opacidad',
+        td3: 'Imagen de fondo personalizada (JPEG comprimido, máx. 640 px)',
+        td4: 'Minutos de estudio diarios (por fecha, eliminados tras 1 año)',
+        td5: 'Si el widget está visible u oculto',
+        td6: 'Esquina del widget (arriba-izq, arriba-der, abajo-izq, abajo-der)',
+        td7: 'Lista de dominios bloqueados durante las sesiones de trabajo',
+        td8: 'Si el mensaje de valoración ha sido descartado',
+        analytics_h2: 'Sin analíticas, sin rastreo',
+        analytics_p: 'Focus Timer no utiliza ningún servicio de analíticas, píxel de seguimiento ni API externa. No hay servidores. La extensión funciona completamente dentro de tu navegador.',
+        perms_h2: 'Permisos',
+        perms_p: 'La extensión solicita los siguientes permisos de Chrome:',
+        perms_th1: 'Permiso',
+        perms_th2: 'Para qué se necesita',
+        perm1: 'Guardar tus ajustes y estadísticas de estudio localmente',
+        perm2: 'Inyectar el widget flotante del temporizador en las páginas web',
+        perm3: 'Sincronizar el temporizador en todas las pestañas abiertas',
+        perm4: 'Mostrar alertas de escritorio al terminar una sesión',
+        perm5: 'Necesario para ejecutar el script en páginas http/https',
+        delete_h2: 'Eliminación de datos',
+        delete_p: 'Puedes eliminar todos los datos guardados en cualquier momento yendo a <strong>chrome://extensions</strong>, encontrando Focus Timer y haciendo clic en <strong>Eliminar</strong>. También puedes usar "Borrar datos de navegación" de Chrome para limpiar el almacenamiento de extensiones.',
+        contact: '¿Preguntas? Contacto: <a href="mailto:ikergg1307@gmail.com">ikergg1307@gmail.com</a>',
+        footer_copy: '© 2026 Focus Timer · Diseñado por <strong style="color:rgba(255,255,255,.6)">Iker G.</strong>',
+        footer_privacy: 'Política de Privacidad'
+      }
+    };
+
+    function setLang(lang) {
+      var strings = S[lang];
+      if (!strings) return;
+      document.querySelectorAll('[data-i18n]').forEach(function (el) {
+        var key = el.getAttribute('data-i18n');
+        if (strings[key] !== undefined) el.innerHTML = strings[key];
+      });
+      document.getElementById('lang-en').classList.toggle('active', lang === 'en');
+      document.getElementById('lang-es').classList.toggle('active', lang === 'es');
+      document.getElementById('root-html').setAttribute('lang', lang);
+      try { localStorage.setItem('ft-lang', lang); } catch (e) {}
+    }
+
+    var saved = null;
+    try { saved = localStorage.getItem('ft-lang'); } catch (e) {}
+    var auto = (navigator.language || '').toLowerCase().startsWith('es') ? 'es' : 'en';
+    setLang(saved || auto);
+
+    window.setLang = setLang;
+  })();
+  </script>
 
 </body>
 </html>
