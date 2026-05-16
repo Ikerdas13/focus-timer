@@ -226,8 +226,10 @@
     .w.br2 { border-radius:50%; height:204px; display:flex; flex-direction:column; }
     .w.br2.sz0 { height:172px; }
     .w.br2.sz2 { height:246px; }
-    /* Header: tight padding so badge + gear + × stay inside the circle */
-    .w.br2 .hdr { background:transparent; border-bottom:none; padding:18px 32px 0; }
+    /* Header: 3-col grid so badge is truly centred regardless of gear+close width */
+    .w.br2 .hdr { background:transparent; border-bottom:none; padding:18px 28px 0; display:grid; grid-template-columns:1fr auto 1fr; align-items:center; }
+    .w.br2 .badge { grid-column:2; }
+    .w.br2 .hdr-r { grid-column:3; justify-self:end; }
     /* Main fills the rest, all content centred */
     .w.br2 #main { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:0 0 14px; }
     /* Hide elements that don't fit in a circle */
