@@ -217,11 +217,11 @@
     .s-br[data-br="0"] { border-radius:3px; }
     .s-br[data-br="2"] { border-radius:50%; }
     .s-br::before { content:''; display:block; background:currentColor; opacity:.6; }
-    .s-br[data-br="0"]::before { width:10px; height:10px; border-radius:2px; }
+    .s-br[data-br="0"]::before { width:10px; height:10px; border-radius:1px; }
     .s-br[data-br="1"]::before { width:10px; height:10px; border-radius:4px; }
     .s-br[data-br="2"]::before { width:10px; height:10px; border-radius:50%; }
     /* Widget border-radius modes */
-    .w.br0 { border-radius:8px; }
+    .w.br0 { border-radius:4px; }
     /* br1 inherits default 20px from .w */
     .w.br2 { border-radius:50%; height:204px; display:flex; flex-direction:column; }
     .w.br2.sz0 { height:172px; }
