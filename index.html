@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" id="root-html">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -120,8 +120,15 @@
     }
     .nav-brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 15px; }
     .nav-brand svg { opacity: .85; }
+    .nav-right { display: flex; align-items: center; gap: 16px; }
     .nav-link { font-size: 13px; color: var(--muted); transition: color .2s; }
     .nav-link:hover { color: var(--text); }
+
+    /* ── Language switcher ── */
+    .lang-sw { display: flex; background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.09); border-radius: 8px; overflow: hidden; }
+    .lang-opt { background: none; border: none; color: rgba(255,255,255,.35); font-size: 11px; font-weight: 700; letter-spacing: .08em; padding: 5px 11px; cursor: pointer; font-family: inherit; transition: all .2s; }
+    .lang-opt:hover { color: rgba(255,255,255,.7); }
+    .lang-opt.active { background: rgba(255,255,255,.13); color: #fff; }
 
     /* ── Hero ── */
     .hero {
@@ -378,24 +385,30 @@
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff6b6b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
       Focus Timer
     </div>
-    <a href="privacy" class="nav-link">Privacy Policy</a>
+    <div class="nav-right">
+      <div class="lang-sw">
+        <button class="lang-opt" id="lang-en" onclick="setLang('en')">EN</button>
+        <button class="lang-opt" id="lang-es" onclick="setLang('es')">ES</button>
+      </div>
+      <a href="privacy" class="nav-link" data-i18n="nav_privacy">Privacy Policy</a>
+    </div>
   </nav>
 
   <!-- Hero -->
   <div class="hero">
-    <div class="hero-badge"><span></span> Chrome Extension · Free · v1.3.0</div>
-    <h1>Your <em>Pomodoro timer</em><br>on every tab</h1>
-    <p class="hero-sub">
+    <div class="hero-badge"><span></span> <span data-i18n="badge">Chrome Extension · Free · v1.3.0</span></div>
+    <h1 data-i18n="hero_h1">Your <em>Pomodoro timer</em><br>on every tab</h1>
+    <p class="hero-sub" data-i18n="hero_sub">
       A floating productivity timer that stays visible as you work — no more switching windows to check the time.
     </p>
     <div class="cta-group">
       <a href="https://chromewebstore.google.com/detail/focus-timer-%E2%80%94-pomodoro-pr/gdidicppaicpkamdlnljeakdefkknikh?hl=es&authuser=0" class="btn-primary">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z" opacity="0"/><circle cx="12" cy="12" r="4" fill="white"/><path d="M12 2C6.48 2 2 6.48 2 12h4c0-3.31 2.69-6 6-6V2z" fill="white"/><path d="M12 2v4c3.31 0 6 2.69 6 6h4c0-5.52-4.48-10-10-10z" fill="white" opacity=".6"/><path d="M2 12c0 5.52 4.48 10 10 10 2.76 0 5.26-1.12 7.07-2.93L16 16c-.97.97-2.31 1.56-3.77 1.56-2.94 0-5.37-1.89-6.28-4.56H2V12z" fill="white" opacity=".3"/></svg>
-        Add to Chrome — Free
+        <span data-i18n="btn_chrome">Add to Chrome — Free</span>
       </a>
       <a href="#features" class="btn-secondary">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-        See features
+        <span data-i18n="btn_features">See features</span>
       </a>
     </div>
 
@@ -470,7 +483,7 @@
           <div style="position:absolute;bottom:20px;right:20px;z-index:10">
             <div class="widget-mock" style="margin:0;box-shadow:0 20px 60px rgba(0,0,0,.75),0 0 60px rgba(255,107,107,.15)">
               <div class="wm-hdr">
-                <div class="wm-badge"><div class="wm-dot"></div> TRABAJO</div>
+                <div class="wm-badge"><div class="wm-dot"></div> <span data-i18n="mock_mode">WORK</span></div>
                 <div class="wm-hdr-r">
                   <div class="wm-icon-btn">
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
@@ -478,7 +491,7 @@
                   <div class="wm-xbtn">×</div>
                 </div>
               </div>
-              <div class="wm-info">Sesión 2 · 1 completada</div>
+              <div class="wm-info" data-i18n="mock_session">Session 2 · 1 completed</div>
               <div class="wm-time">18:32</div>
               <div class="wm-bar"><div class="wm-fill"></div></div>
               <div class="wm-btns">
@@ -487,12 +500,12 @@
                 <div class="wm-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 1l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 23l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg></div>
               </div>
               <div style="text-align:center;padding:2px 14px 2px">
-                <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);border-radius:8px;color:rgba(255,255,255,.3);font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:6px 0">NUEVO CICLO</div>
+                <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);border-radius:8px;color:rgba(255,255,255,.3);font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:6px 0" data-i18n="mock_cycle">NEW CYCLE</div>
               </div>
               <div style="display:flex;align-items:center;justify-content:space-between;padding:6px 14px 8px">
                 <span style="font-size:10px;color:rgba(255,255,255,.28);display:flex;align-items:center;gap:4px">
                   <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-                  Alarma
+                  <span data-i18n="mock_alarm">Alarm</span>
                 </span>
                 <div style="width:32px;height:18px;background:rgba(255,107,107,.5);border-radius:9px;position:relative;border:1px solid rgba(255,107,107,.4)">
                   <div style="position:absolute;width:14px;height:14px;top:1px;right:1px;background:#fff;border-radius:50%;box-shadow:0 1px 3px rgba(0,0,0,.4)"></div>
@@ -509,75 +522,75 @@
 
   <!-- Features -->
   <section id="features">
-    <div class="section-label">★ Key features</div>
-    <h2>Everything you need to stay focused</h2>
-    <p class="section-sub">Built on the proven Pomodoro Technique. 25 min work, 5 min rest, repeat.</p>
+    <div class="section-label" data-i18n="feat_label">★ Key features</div>
+    <h2 data-i18n="feat_h2">Everything you need to stay focused</h2>
+    <p class="section-sub" data-i18n="feat_sub">Built on the proven Pomodoro Technique. 25 min work, 5 min rest, repeat.</p>
 
     <div class="features-grid">
       <div class="feat">
         <div class="feat-icon">🎯</div>
-        <h3>Floating on every tab</h3>
-        <p>The timer stays visible as you browse. Drag it anywhere — it snaps to the nearest corner when you release.</p>
+        <h3 data-i18n="feat1_h3">Floating on every tab</h3>
+        <p data-i18n="feat1_p">The timer stays visible as you browse. Drag it anywhere — it snaps to the nearest corner when you release.</p>
       </div>
       <div class="feat">
         <div class="feat-icon green">🔔</div>
-        <h3>Alarm + notifications</h3>
-        <p>3-tone chime and a desktop notification when your session ends. Toggle the alarm on or off directly from the widget.</p>
+        <h3 data-i18n="feat2_h3">Alarm + notifications</h3>
+        <p data-i18n="feat2_p">3-tone chime and a desktop notification when your session ends. Toggle the alarm on or off directly from the widget.</p>
       </div>
       <div class="feat">
         <div class="feat-icon">🏖️</div>
-        <h3>Long break every 4 sessions</h3>
-        <p>Classic Pomodoro cycle: after 4 work sessions, a longer rest kicks in automatically. Duration is configurable.</p>
+        <h3 data-i18n="feat3_h3">Long break every 4 sessions</h3>
+        <p data-i18n="feat3_p">Classic Pomodoro cycle: after 4 work sessions, a longer rest kicks in automatically. Duration is configurable.</p>
       </div>
       <div class="feat">
         <div class="feat-icon">🚫</div>
-        <h3>Website blocker</h3>
-        <p>Add any site to the block list and it gets a full-screen overlay during work sessions. Automatically lifts on break.</p>
+        <h3 data-i18n="feat4_h3">Website blocker</h3>
+        <p data-i18n="feat4_p">Add any site to the block list and it gets a full-screen overlay during work sessions. Automatically lifts on break.</p>
       </div>
       <div class="feat">
         <div class="feat-icon blue">⚡</div>
-        <h3>Synced across all tabs</h3>
-        <p>One timer runs everywhere. Pause in one tab, see it paused in all others — in real time.</p>
+        <h3 data-i18n="feat5_h3">Synced across all tabs</h3>
+        <p data-i18n="feat5_p">One timer runs everywhere. Pause in one tab, see it paused in all others — in real time.</p>
       </div>
       <div class="feat">
         <div class="feat-icon green">📊</div>
-        <h3>Study stats</h3>
-        <p>Daily, weekly and monthly study minutes tracked automatically. No setup needed.</p>
+        <h3 data-i18n="feat6_h3">Study stats</h3>
+        <p data-i18n="feat6_p">Daily, weekly and monthly study minutes tracked automatically. No setup needed.</p>
       </div>
       <div class="feat">
         <div class="feat-icon">🖼️</div>
-        <h3>Custom background image</h3>
-        <p>Set your own photo as the widget background. Auto-compressed so it never slows down your browser.</p>
+        <h3 data-i18n="feat7_h3">Custom background image</h3>
+        <p data-i18n="feat7_p">Set your own photo as the widget background. Auto-compressed so it never slows down your browser.</p>
       </div>
       <div class="feat">
         <div class="feat-icon blue">🌍</div>
-        <h3>Spanish & English</h3>
-        <p>Auto-detected from your browser language. Switch between ES and EN at any time from the settings.</p>
+        <h3 data-i18n="feat8_h3">Spanish &amp; English</h3>
+        <p data-i18n="feat8_p">Auto-detected from your browser language. Switch between ES and EN at any time from the settings.</p>
       </div>
       <div class="feat">
         <div class="feat-icon">⏱️</div>
-        <h3>Fully adjustable durations</h3>
-        <p>Set work and break lengths anywhere from 1 to 99 minutes. Adapt the Pomodoro method to how you actually work.</p>
+        <h3 data-i18n="feat9_h3">Fully adjustable durations</h3>
+        <p data-i18n="feat9_p">Set work and break lengths anywhere from 1 to 99 minutes. Adapt the Pomodoro method to how you actually work.</p>
       </div>
       <div class="feat">
         <div class="feat-icon green">📐</div>
-        <h3>3 widget sizes</h3>
-        <p>Pick S, M or L. Go small to stay discreet, or large to keep the timer always in the corner of your eye.</p>
+        <h3 data-i18n="feat10_h3">3 widget sizes</h3>
+        <p data-i18n="feat10_p">Pick S, M or L. Go small to stay discreet, or large to keep the timer always in the corner of your eye.</p>
       </div>
       <div class="feat">
         <div class="feat-icon blue">👁️</div>
-        <h3>Auto-fades when idle</h3>
-        <p>The widget steps back when your cursor moves away. Set idle opacity from 50–100% — exact pixel-level mouse detection, no halo zone.</p>
+        <h3 data-i18n="feat11_h3">Auto-fades when idle</h3>
+        <p data-i18n="feat11_p">The widget steps back when your cursor moves away. Set idle opacity from 50–100% — exact pixel-level mouse detection, no halo zone.</p>
       </div>
       <div class="feat">
         <div class="feat-icon">🎨</div>
-        <h3>Custom colors</h3>
-        <p>Set independent colors for the menu accent, work sessions and break sessions. Reset to defaults anytime with one click.</p>
+        <h3 data-i18n="feat12_h3">Custom colors</h3>
+        <p data-i18n="feat12_p">Set independent colors for the menu accent, work sessions and break sessions. Reset to defaults anytime with one click.</p>
       </div>
       <div class="feat">
         <div class="feat-icon green">🕐</div>
-        <h3>Live study clock</h3>
-        <p>Show the current time on the widget in 12h or 24h format. No need to look away from your work to check the time.</p>
+        <h3 data-i18n="feat13_h3">Live study clock</h3>
+        <p data-i18n="feat13_p">Show the current time on the widget in 12h or 24h format. No need to look away from your work to check the time.</p>
       </div>
     </div>
   </section>
@@ -588,21 +601,21 @@
 
       <!-- Text -->
       <div class="showcase-text">
-        <div class="section-label">Customise</div>
-        <h2>Built around<br>how you work</h2>
-        <p style="font-size:16px;color:var(--muted);line-height:1.65;margin-top:14px;max-width:400px">
+        <div class="section-label" data-i18n="showcase_label">Customise</div>
+        <h2 data-i18n="showcase_h2">Built around<br>how you work</h2>
+        <p style="font-size:16px;color:var(--muted);line-height:1.65;margin-top:14px;max-width:400px" data-i18n="showcase_p">
           Every detail is adjustable — session lengths, colors, widget size, blocked sites and more. Set it once, forget about it.
         </p>
         <ul class="showcase-list">
-          <li><span class="check">✓</span> Work &amp; break durations (1–99 min)</li>
-          <li><span class="check">✓</span> 3 custom colors — menu, work &amp; break</li>
-          <li><span class="check">✓</span> 3 widget sizes — S, M, L + circle mode</li>
-          <li><span class="check">✓</span> Adjustable idle opacity (50–100%)</li>
-          <li><span class="check">✓</span> Live clock — 12h / 24h / off</li>
-          <li><span class="check">✓</span> Custom background image</li>
-          <li><span class="check">✓</span> Long break every 4 sessions</li>
-          <li><span class="check">✓</span> Website blocker list</li>
-          <li><span class="check">✓</span> Spanish / English interface</li>
+          <li><span class="check">✓</span> <span data-i18n="check1">Work &amp; break durations (1–99 min)</span></li>
+          <li><span class="check">✓</span> <span data-i18n="check2">3 custom colors — menu, work &amp; break</span></li>
+          <li><span class="check">✓</span> <span data-i18n="check3">3 widget sizes — S, M, L + circle mode</span></li>
+          <li><span class="check">✓</span> <span data-i18n="check4">Adjustable idle opacity (50–100%)</span></li>
+          <li><span class="check">✓</span> <span data-i18n="check5">Live clock — 12h / 24h / off</span></li>
+          <li><span class="check">✓</span> <span data-i18n="check6">Custom background image</span></li>
+          <li><span class="check">✓</span> <span data-i18n="check7">Long break every 4 sessions</span></li>
+          <li><span class="check">✓</span> <span data-i18n="check8">Website blocker list</span></li>
+          <li><span class="check">✓</span> <span data-i18n="check9">Spanish / English interface</span></li>
         </ul>
       </div>
 
@@ -612,47 +625,47 @@
           <div class="wm-hdr">
             <div class="wm-badge" style="color:rgba(255,255,255,.25)">
               <div class="wm-dot" style="background:rgba(255,255,255,.15);box-shadow:none;animation:none"></div>
-              TRABAJO
+              <span data-i18n="mock_mode">WORK</span>
             </div>
             <div class="wm-xbtn">×</div>
           </div>
           <div class="wm-sett">
             <!-- 4 tabs — Aspecto active -->
             <div style="display:flex;border-bottom:1px solid rgba(255,255,255,.06);margin:-4px -14px 0;padding:0 14px">
-              <div style="flex:1;padding:7px 2px 8px;font-size:8.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.22);text-align:center">Sesión</div>
-              <div style="flex:1;padding:7px 2px 8px;font-size:8.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--red);border-bottom:2px solid var(--red);margin-bottom:-1px;text-align:center">Aspecto</div>
+              <div style="flex:1;padding:7px 2px 8px;font-size:8.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.22);text-align:center" data-i18n="mock_tab_session">Session</div>
+              <div style="flex:1;padding:7px 2px 8px;font-size:8.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--red);border-bottom:2px solid var(--red);margin-bottom:-1px;text-align:center" data-i18n="mock_tab_aspect">Appearance</div>
               <div style="flex:1;padding:7px 2px 8px;font-size:8.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.22);text-align:center">Stats</div>
-              <div style="flex:1;padding:7px 2px 8px;font-size:8.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.22);text-align:center">Bloqueos</div>
+              <div style="flex:1;padding:7px 2px 8px;font-size:8.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.22);text-align:center" data-i18n="mock_tab_blocks">Blocks</div>
             </div>
             <!-- Aspecto content -->
             <div style="margin-top:8px">
-              <div style="font-size:8.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.2);padding-bottom:5px;border-bottom:1px solid rgba(255,255,255,.06);margin-bottom:8px">Colores</div>
+              <div style="font-size:8.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.2);padding-bottom:5px;border-bottom:1px solid rgba(255,255,255,.06);margin-bottom:8px" data-i18n="mock_col_colors">Colors</div>
               <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-bottom:7px">
                 <div style="display:flex;flex-direction:column;align-items:center;gap:4px;padding:6px 4px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:9px">
                   <div style="width:22px;height:22px;border-radius:50%;background:#ef4444;border:2px solid rgba(255,255,255,.15)"></div>
-                  <span style="font-size:8px;color:rgba(255,255,255,.3)">Menú</span>
+                  <span style="font-size:8px;color:rgba(255,255,255,.3)" data-i18n="mock_col_menu">Menu</span>
                 </div>
                 <div style="display:flex;flex-direction:column;align-items:center;gap:4px;padding:6px 4px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:9px">
                   <div style="width:22px;height:22px;border-radius:50%;background:#ef4444;border:2px solid rgba(255,255,255,.7);box-shadow:0 0 7px rgba(255,255,255,.2)"></div>
-                  <span style="font-size:8px;color:rgba(255,255,255,.3)">Trabajo</span>
+                  <span style="font-size:8px;color:rgba(255,255,255,.3)" data-i18n="mock_col_work">Work</span>
                 </div>
                 <div style="display:flex;flex-direction:column;align-items:center;gap:4px;padding:6px 4px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:9px">
                   <div style="width:22px;height:22px;border-radius:50%;background:#3b82f6;border:2px solid rgba(255,255,255,.15)"></div>
-                  <span style="font-size:8px;color:rgba(255,255,255,.3)">Descanso</span>
+                  <span style="font-size:8px;color:rgba(255,255,255,.3)" data-i18n="mock_col_break">Break</span>
                 </div>
               </div>
               <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:6px;color:rgba(255,255,255,.28);font-size:9px;font-weight:600;padding:4px;text-align:center;margin-bottom:8px">↺ Reset</div>
             </div>
             <div style="font-size:8.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.2);padding-bottom:5px;border-bottom:1px solid rgba(255,255,255,.06);margin-bottom:8px">Widget</div>
             <div class="wm-s-row" style="margin-bottom:6px">
-              <span class="wm-s-lbl">Tamaño</span>
+              <span class="wm-s-lbl" data-i18n="mock_size">Size</span>
               <div class="wm-sizes">
                 <div class="wm-sz">S</div>
                 <div class="wm-sz active">M</div>
                 <div class="wm-sz">L</div>
               </div>
             </div>
-            <div class="wm-s-save" style="margin-top:4px">VOLVER</div>
+            <div class="wm-s-save" style="margin-top:4px" data-i18n="mock_back">BACK</div>
           </div>
         </div>
       </div>
@@ -665,21 +678,21 @@
     <div class="privacy-box">
       <div class="privacy-icon">🔒</div>
       <div style="flex:1">
-        <h3>100% private — zero data leaves your browser</h3>
-        <p>All timer state, settings and statistics are stored locally using <code style="color:var(--red);font-size:12px">chrome.storage.local</code>. No servers, no accounts, no tracking of any kind.</p>
+        <h3 data-i18n="priv_h3">100% private — zero data leaves your browser</h3>
+        <p data-i18n="priv_p">All timer state, settings and statistics are stored locally using <code style="color:var(--red);font-size:12px">chrome.storage.local</code>. No servers, no accounts, no tracking of any kind.</p>
         <table class="privacy-table">
-          <tr><th>Key stored</th><th>What it contains</th></tr>
-          <tr><td>pomoState</td><td>Timer mode, elapsed time, session count, long-break flag</td></tr>
-          <tr><td>pomoSettings</td><td>Work/break durations, custom colors, size, language, alarm, long break, opacity</td></tr>
-          <tr><td>pomoBg</td><td>Custom background image (compressed JPEG, max 640 px)</td></tr>
-          <tr><td>pomoStats</td><td>Daily study minutes (date-keyed, pruned after 1 year)</td></tr>
-          <tr><td>pomoVisible</td><td>Whether the widget is shown or hidden</td></tr>
-          <tr><td>pomoPosition</td><td>Widget corner (top-left, top-right, bottom-left, bottom-right)</td></tr>
-          <tr><td>pomoBlacklist</td><td>List of blocked domains during work sessions</td></tr>
-          <tr><td>pomoRatingDismissed</td><td>Whether the rating prompt has been dismissed</td></tr>
+          <tr><th data-i18n="priv_th1">Key stored</th><th data-i18n="priv_th2">What it contains</th></tr>
+          <tr><td>pomoState</td><td data-i18n="priv_td1">Timer mode, elapsed time, session count, long-break flag</td></tr>
+          <tr><td>pomoSettings</td><td data-i18n="priv_td2">Work/break durations, custom colors, size, language, alarm, long break, opacity</td></tr>
+          <tr><td>pomoBg</td><td data-i18n="priv_td3">Custom background image (compressed JPEG, max 640 px)</td></tr>
+          <tr><td>pomoStats</td><td data-i18n="priv_td4">Daily study minutes (date-keyed, pruned after 1 year)</td></tr>
+          <tr><td>pomoVisible</td><td data-i18n="priv_td5">Whether the widget is shown or hidden</td></tr>
+          <tr><td>pomoPosition</td><td data-i18n="priv_td6">Widget corner (top-left, top-right, bottom-left, bottom-right)</td></tr>
+          <tr><td>pomoBlacklist</td><td data-i18n="priv_td7">List of blocked domains during work sessions</td></tr>
+          <tr><td>pomoRatingDismissed</td><td data-i18n="priv_td8">Whether the rating prompt has been dismissed</td></tr>
         </table>
         <div style="margin-top:18px">
-          <a href="privacy" style="font-size:13px;color:var(--muted);text-decoration:underline">Read full Privacy Policy →</a>
+          <a href="privacy" style="font-size:13px;color:var(--muted);text-decoration:underline" data-i18n="priv_link">Read full Privacy Policy →</a>
         </div>
       </div>
     </div>
@@ -687,9 +700,9 @@
 
   <!-- CTA final -->
   <div class="cta-section">
-    <div class="section-label">Free · No signup</div>
-    <h2>Start your first session<br>in 30 seconds</h2>
-    <p>Install from the Chrome Web Store and the timer appears on every page immediately.</p>
+    <div class="section-label" data-i18n="cta_label">Free · No signup</div>
+    <h2 data-i18n="cta_h2">Start your first session<br>in 30 seconds</h2>
+    <p data-i18n="cta_p">Install from the Chrome Web Store and the timer appears on every page immediately.</p>
     <a href="https://chromewebstore.google.com/detail/focus-timer-%E2%80%94-pomodoro-pr/gdidicppaicpkamdlnljeakdefkknikh?hl=es&authuser=0" class="btn-primary" style="font-size:16px;padding:16px 36px">
       <svg width="20" height="20" viewBox="0 0 48 48" fill="none">
         <circle cx="24" cy="24" r="22" fill="white" opacity=".15"/>
@@ -698,19 +711,206 @@
         <path d="M24 2v10c6.63 0 12 5.37 12 12h10C46 11.85 36.15 2 24 2z" fill="white" opacity=".55"/>
         <path d="M2 24c0 12.15 9.85 22 22 22 6.08 0 11.58-2.46 15.56-6.44L32 32c-2.1 2.1-5 3.39-8.22 3.39-6.43 0-11.69-4.87-12.26-11.16L2 24z" fill="white" opacity=".3"/>
       </svg>
-      Add to Chrome — It's free
+      <span data-i18n="cta_btn">Add to Chrome — It's free</span>
     </a>
   </div>
 
   <!-- Footer -->
   <footer>
-    <div>© 2026 Focus Timer · Designed by <strong style="color:rgba(255,255,255,.6)">Iker G.</strong></div>
+    <div data-i18n="footer_copy">© 2026 Focus Timer · Designed by <strong style="color:rgba(255,255,255,.6)">Iker G.</strong></div>
     <div style="display:flex;gap:24px">
       <a href="https://chromewebstore.google.com/detail/focus-timer-%E2%80%94-pomodoro-pr/gdidicppaicpkamdlnljeakdefkknikh?hl=es&authuser=0">Chrome Web Store</a>
-      <a href="privacy">Privacy Policy</a>
+      <a href="privacy" data-i18n="nav_privacy">Privacy Policy</a>
       <a href="https://github.com/Ikerdas13/focus-timer">GitHub</a>
     </div>
   </footer>
+
+  <script>
+  (function () {
+    var S = {
+      en: {
+        nav_privacy: 'Privacy Policy',
+        badge: 'Chrome Extension · Free · v1.3.0',
+        hero_h1: 'Your <em>Pomodoro timer</em><br>on every tab',
+        hero_sub: 'A floating productivity timer that stays visible as you work — no more switching windows to check the time.',
+        btn_chrome: 'Add to Chrome — Free',
+        btn_features: 'See features',
+        feat_label: '★ Key features',
+        feat_h2: 'Everything you need to stay focused',
+        feat_sub: 'Built on the proven Pomodoro Technique. 25 min work, 5 min rest, repeat.',
+        feat1_h3: 'Floating on every tab',
+        feat1_p: 'The timer stays visible as you browse. Drag it anywhere — it snaps to the nearest corner when you release.',
+        feat2_h3: 'Alarm + notifications',
+        feat2_p: '3-tone chime and a desktop notification when your session ends. Toggle the alarm on or off directly from the widget.',
+        feat3_h3: 'Long break every 4 sessions',
+        feat3_p: 'Classic Pomodoro cycle: after 4 work sessions, a longer rest kicks in automatically. Duration is configurable.',
+        feat4_h3: 'Website blocker',
+        feat4_p: 'Add any site to the block list and it gets a full-screen overlay during work sessions. Automatically lifts on break.',
+        feat5_h3: 'Synced across all tabs',
+        feat5_p: 'One timer runs everywhere. Pause in one tab, see it paused in all others — in real time.',
+        feat6_h3: 'Study stats',
+        feat6_p: 'Daily, weekly and monthly study minutes tracked automatically. No setup needed.',
+        feat7_h3: 'Custom background image',
+        feat7_p: 'Set your own photo as the widget background. Auto-compressed so it never slows down your browser.',
+        feat8_h3: 'Spanish &amp; English',
+        feat8_p: 'Auto-detected from your browser language. Switch between ES and EN at any time from the settings.',
+        feat9_h3: 'Fully adjustable durations',
+        feat9_p: 'Set work and break lengths anywhere from 1 to 99 minutes. Adapt the Pomodoro method to how you actually work.',
+        feat10_h3: '3 widget sizes',
+        feat10_p: 'Pick S, M or L. Go small to stay discreet, or large to keep the timer always in the corner of your eye.',
+        feat11_h3: 'Auto-fades when idle',
+        feat11_p: 'The widget steps back when your cursor moves away. Set idle opacity from 50–100% — exact pixel-level mouse detection, no halo zone.',
+        feat12_h3: 'Custom colors',
+        feat12_p: 'Set independent colors for the menu accent, work sessions and break sessions. Reset to defaults anytime with one click.',
+        feat13_h3: 'Live study clock',
+        feat13_p: 'Show the current time on the widget in 12h or 24h format. No need to look away from your work to check the time.',
+        showcase_label: 'Customise',
+        showcase_h2: 'Built around<br>how you work',
+        showcase_p: 'Every detail is adjustable — session lengths, colors, widget size, blocked sites and more. Set it once, forget about it.',
+        check1: 'Work &amp; break durations (1–99 min)',
+        check2: '3 custom colors — menu, work &amp; break',
+        check3: '3 widget sizes — S, M, L + circle mode',
+        check4: 'Adjustable idle opacity (50–100%)',
+        check5: 'Live clock — 12h / 24h / off',
+        check6: 'Custom background image',
+        check7: 'Long break every 4 sessions',
+        check8: 'Website blocker list',
+        check9: 'Spanish / English interface',
+        priv_h3: '100% private — zero data leaves your browser',
+        priv_p: 'All timer state, settings and statistics are stored locally using <code style="color:var(--red);font-size:12px">chrome.storage.local</code>. No servers, no accounts, no tracking of any kind.',
+        priv_th1: 'Key stored',
+        priv_th2: 'What it contains',
+        priv_td1: 'Timer mode, elapsed time, session count, long-break flag',
+        priv_td2: 'Work/break durations, custom colors, size, language, alarm, long break, opacity',
+        priv_td3: 'Custom background image (compressed JPEG, max 640 px)',
+        priv_td4: 'Daily study minutes (date-keyed, pruned after 1 year)',
+        priv_td5: 'Whether the widget is shown or hidden',
+        priv_td6: 'Widget corner (top-left, top-right, bottom-left, bottom-right)',
+        priv_td7: 'List of blocked domains during work sessions',
+        priv_td8: 'Whether the rating prompt has been dismissed',
+        priv_link: 'Read full Privacy Policy →',
+        cta_label: 'Free · No signup',
+        cta_h2: 'Start your first session<br>in 30 seconds',
+        cta_p: 'Install from the Chrome Web Store and the timer appears on every page immediately.',
+        cta_btn: "Add to Chrome — It's free",
+        footer_copy: '© 2026 Focus Timer · Designed by <strong style="color:rgba(255,255,255,.6)">Iker G.</strong>',
+        mock_mode: 'WORK',
+        mock_session: 'Session 2 · 1 completed',
+        mock_cycle: 'NEW CYCLE',
+        mock_alarm: 'Alarm',
+        mock_tab_session: 'Session',
+        mock_tab_aspect: 'Appearance',
+        mock_tab_blocks: 'Blocks',
+        mock_col_colors: 'Colors',
+        mock_col_menu: 'Menu',
+        mock_col_work: 'Work',
+        mock_col_break: 'Break',
+        mock_size: 'Size',
+        mock_back: 'BACK'
+      },
+      es: {
+        nav_privacy: 'Política de Privacidad',
+        badge: 'Extensión Chrome · Gratis · v1.3.0',
+        hero_h1: 'Tu <em>temporizador Pomodoro</em><br>en cada pestaña',
+        hero_sub: 'Un temporizador de productividad flotante que permanece visible mientras trabajas — sin cambiar de ventana para ver la hora.',
+        btn_chrome: 'Añadir a Chrome — Gratis',
+        btn_features: 'Ver características',
+        feat_label: '★ Características principales',
+        feat_h2: 'Todo lo que necesitas para concentrarte',
+        feat_sub: 'Basado en la técnica Pomodoro. 25 min trabajo, 5 min descanso, repetir.',
+        feat1_h3: 'Flotante en cada pestaña',
+        feat1_p: 'El temporizador permanece visible mientras navegas. Arrástralo a cualquier esquina — se ancla al soltarlo.',
+        feat2_h3: 'Alarma + notificaciones',
+        feat2_p: 'Tono de 3 notas y notificación de escritorio al terminar la sesión. Activa o desactiva la alarma desde el widget.',
+        feat3_h3: 'Descanso largo cada 4 sesiones',
+        feat3_p: 'Ciclo Pomodoro clásico: tras 4 sesiones de trabajo, un descanso largo se activa automáticamente. Duración configurable.',
+        feat4_h3: 'Bloqueador de webs',
+        feat4_p: 'Añade cualquier web a la lista de bloqueo y mostrará una pantalla completa durante las sesiones de trabajo. Se desactiva en el descanso.',
+        feat5_h3: 'Sincronizado en todas las pestañas',
+        feat5_p: 'Un solo temporizador en todas partes. Pausa en una pestaña y lo ves pausado en todas — en tiempo real.',
+        feat6_h3: 'Estadísticas de estudio',
+        feat6_p: 'Minutos de estudio diarios, semanales y mensuales registrados automáticamente. Sin configuración.',
+        feat7_h3: 'Imagen de fondo personalizada',
+        feat7_p: 'Pon tu propia foto como fondo del widget. Se comprime automáticamente para no ralentizar el navegador.',
+        feat8_h3: 'Español e inglés',
+        feat8_p: 'Detectado automáticamente desde el idioma del navegador. Cambia entre ES e EN en cualquier momento desde los ajustes.',
+        feat9_h3: 'Duraciones totalmente ajustables',
+        feat9_p: 'Configura la duración del trabajo y el descanso entre 1 y 99 minutos. Adapta el método Pomodoro a tu ritmo real.',
+        feat10_h3: '3 tamaños de widget',
+        feat10_p: 'Elige S, M o L. Pequeño para pasar desapercibido, o grande para tener el timer siempre en el ángulo de visión.',
+        feat11_h3: 'Se difumina cuando está inactivo',
+        feat11_p: 'El widget se retira cuando alejas el cursor. Ajusta la opacidad entre 50–100% — detección exacta al píxel, sin zona muerta.',
+        feat12_h3: 'Colores personalizados',
+        feat12_p: 'Elige colores independientes para el acento del menú, las sesiones de trabajo y los descansos. Restaura los valores por defecto con un clic.',
+        feat13_h3: 'Reloj de estudio en vivo',
+        feat13_p: 'Muestra la hora actual en el widget en formato 12h o 24h. Sin necesidad de apartar la vista del trabajo.',
+        showcase_label: 'Personaliza',
+        showcase_h2: 'Diseñado para<br>tu forma de trabajar',
+        showcase_p: 'Cada detalle es ajustable — duración de sesiones, colores, tamaño del widget, webs bloqueadas y más. Configúralo una vez y olvídate.',
+        check1: 'Duraciones trabajo y descanso (1–99 min)',
+        check2: '3 colores personalizados — menú, trabajo y descanso',
+        check3: '3 tamaños — S, M, L + modo círculo',
+        check4: 'Opacidad ajustable (50–100%)',
+        check5: 'Reloj en vivo — 12h / 24h / desactivado',
+        check6: 'Imagen de fondo personalizada',
+        check7: 'Descanso largo cada 4 sesiones',
+        check8: 'Lista de webs bloqueadas',
+        check9: 'Interfaz español / inglés',
+        priv_h3: '100% privado — ningún dato sale de tu navegador',
+        priv_p: 'Todo el estado del temporizador, ajustes y estadísticas se guardan localmente usando <code style="color:var(--red);font-size:12px">chrome.storage.local</code>. Sin servidores, sin cuentas, sin ningún tipo de seguimiento.',
+        priv_th1: 'Clave guardada',
+        priv_th2: 'Qué contiene',
+        priv_td1: 'Modo, tiempo transcurrido, sesiones, flag descanso largo',
+        priv_td2: 'Duraciones, colores personalizados, tamaño, idioma, alarma, descanso largo, opacidad',
+        priv_td3: 'Imagen de fondo personalizada (JPEG comprimido, máx. 640 px)',
+        priv_td4: 'Minutos de estudio diarios (por fecha, se eliminan tras 1 año)',
+        priv_td5: 'Si el widget está visible u oculto',
+        priv_td6: 'Esquina del widget (arriba-izq, arriba-der, abajo-izq, abajo-der)',
+        priv_td7: 'Lista de dominios bloqueados durante las sesiones de trabajo',
+        priv_td8: 'Si el mensaje de valoración ha sido descartado',
+        priv_link: 'Leer política de privacidad completa →',
+        cta_label: 'Gratis · Sin registro',
+        cta_h2: 'Empieza tu primera sesión<br>en 30 segundos',
+        cta_p: 'Instala desde Chrome Web Store y el temporizador aparece en cada página al instante.',
+        cta_btn: 'Añadir a Chrome — Es gratis',
+        footer_copy: '© 2026 Focus Timer · Diseñado por <strong style="color:rgba(255,255,255,.6)">Iker G.</strong>',
+        mock_mode: 'TRABAJO',
+        mock_session: 'Sesión 2 · 1 completada',
+        mock_cycle: 'NUEVO CICLO',
+        mock_alarm: 'Alarma',
+        mock_tab_session: 'Sesión',
+        mock_tab_aspect: 'Aspecto',
+        mock_tab_blocks: 'Bloqueos',
+        mock_col_colors: 'Colores',
+        mock_col_menu: 'Menú',
+        mock_col_work: 'Trabajo',
+        mock_col_break: 'Descanso',
+        mock_size: 'Tamaño',
+        mock_back: 'VOLVER'
+      }
+    };
+
+    function setLang(lang) {
+      var strings = S[lang];
+      if (!strings) return;
+      document.querySelectorAll('[data-i18n]').forEach(function (el) {
+        var key = el.getAttribute('data-i18n');
+        if (strings[key] !== undefined) el.innerHTML = strings[key];
+      });
+      document.getElementById('lang-en').classList.toggle('active', lang === 'en');
+      document.getElementById('lang-es').classList.toggle('active', lang === 'es');
+      document.getElementById('root-html').setAttribute('lang', lang);
+      try { localStorage.setItem('ft-lang', lang); } catch (e) {}
+    }
+
+    var saved = null;
+    try { saved = localStorage.getItem('ft-lang'); } catch (e) {}
+    var auto = (navigator.language || '').toLowerCase().startsWith('es') ? 'es' : 'en';
+    setLang(saved || auto);
+
+    window.setLang = setLang;
+  })();
+  </script>
 
 </body>
 </html>
