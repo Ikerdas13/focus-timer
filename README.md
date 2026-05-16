@@ -20,9 +20,11 @@ Designed by **Iker G.**
 - **Always visible** — floats over every website, draggable to any corner
 - **Works across all tabs** — one timer, synchronized everywhere
 - **Customizable durations** — set your own work / break minutes
-- **4 color themes** — Obsidian, Ocean, Sunset, Cosmic
-- **3 sizes** — S / M / L to fit your workflow
+- **3 custom colors** — independent pickers for menu accent, work and break
+- **3 sizes** — S / M / L including circle / pill mode
 - **Custom background image** — pick any photo from your computer
+- **Opacity control** — set idle transparency (50–100%)
+- **Live clock** — 12h / 24h / off
 - **Study time tracking** — daily, weekly and monthly stats, updated in real time
 - **Site blocker** — block distracting domains during work sessions
 - **Long breaks** — automatic extended rest after every 4 work sessions
@@ -84,6 +86,16 @@ All data is stored **locally in the browser** via `chrome.storage.local`. Nothin
 ---
 
 ## Changelog
+
+### v1.3.0
+- 3 independent color pickers: Menu accent, Work, Break — with Reset button
+- Appearance panel reorganized into sections: Colors · Widget · Display
+- Opacity slider (0% = 50% real opacity, 100% = full)
+- Border toggle: sharp / rounded / circle
+- Live clock: 12h / 24h / off
+- Session info toggle
+- Scroll in settings no longer bleeds through to the page
+- Exact pixel-level mouse detection for opacity fade
 
 ### v1.2.0
 - Settings redesigned with tab navigation (Sesión · Aspecto · Stats · Bloqueos)

@@ -10,7 +10,7 @@
   var WORK = 25 * 60, BREAK = 5 * 60;
   var mode = 'work', isRunning = false, offset = 0, startTime = null;
   var completed = 0, session = 1;
-  var currentTheme = 0;
+  var DEFAULTS = { cw: '#ef4444', cb: '#3b82f6' };
   var currentSize  = 1;
   var currentBg    = null;
   var cachedStats       = {};
@@ -28,7 +28,9 @@
   var currentRadius   = 1;
   var clockFmt        = 'off';
   var showSessionInfo = true;
-  var customAccent    = null;
+  var customMenu     = null;
+  var customWork     = null;
+  var customBreak    = null;
   var currentlyIdle   = false;
   var settVisible     = false;
 
@@ -52,7 +54,9 @@
       blockMsg: 'Termina la sesión para acceder durante el descanso',
       tabSession: 'Sesión', tabAppearance: 'Aspecto', tabStats: 'Stats', tabBlocks: 'Bloqueos',
       ratingMsg: '¿Te está ayudando?', ratingCta: 'Valórala ⭐',
-      opacity: 'Opacidad', radius: 'Bordes del widget', clockLbl: 'Reloj', showSess: 'Info sesión'
+      opacity: 'Opacidad', radius: 'Bordes del widget', clockLbl: 'Reloj', showSess: 'Info sesión',
+      secTheme: 'Tema', secColors: 'Colores', secWidget: 'Widget', secDisplay: 'Pantalla',
+      colorMenu: 'Menú', colorWork: 'Trabajo', colorBreak: 'Descanso', resetColors: '↺ Reset'
     },
     en: {
       work: 'WORK', brk: 'BREAK',
@@ -73,7 +77,9 @@
       blockMsg: 'Finish the session to access this during the break',
       tabSession: 'Session', tabAppearance: 'Style', tabStats: 'Stats', tabBlocks: 'Blocks',
       ratingMsg: 'Is it helping you?', ratingCta: 'Rate it ⭐',
-      opacity: 'Opacity', radius: 'Widget corners', clockLbl: 'Clock', showSess: 'Session info'
+      opacity: 'Opacity', radius: 'Widget corners', clockLbl: 'Clock', showSess: 'Session info',
+      secTheme: 'Theme', secColors: 'Colors', secWidget: 'Widget', secDisplay: 'Display',
+      colorMenu: 'Menu', colorWork: 'Work', colorBreak: 'Break', resetColors: '↺ Reset'
     }
   };
   function T(k) { return STRINGS[lang][k]; }
@@ -132,13 +138,7 @@
     .w.sz2 .btn { width:40px; height:40px; }
     .w.sz2 .btns { gap:10px; padding:8px 14px 8px; }
     .w.sz2 .badge { font-size:10.5px; }
-    .w     { --cw:#ff6b6b; --cb:#4dd9ac; --bg1:#17172b; --bg2:#0f0f1e; }
-    .w.t0  { --cw:#ff6b6b; --cb:#4dd9ac; --bg1:#17172b; --bg2:#0f0f1e; }
-    .w.t1  { --cw:#60a5fa; --cb:#34d399; --bg1:#071828; --bg2:#040e1a; }
-    .w.t2  { --cw:#fb923c; --cb:#fbbf24; --bg1:#1a1008; --bg2:#0f0904; }
-    .w.t3  { --cw:#c084fc; --cb:#f472b6; --bg1:#180828; --bg2:#0e0418; }
-    .w.t4  { --cw:#22c55e; --cb:#6ee7b7; --bg1:#0a1810; --bg2:#050e08; }
-    .w.t5  { --cw:#f43f5e; --cb:#fb923c; --bg1:#1a080c; --bg2:#0a0408; }
+    .w     { --cw:#ef4444; --cb:#3b82f6; --bg1:#0f1117; --bg2:#090b0e; --ca:var(--cw); }
     .w { font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",system-ui,sans-serif; position:relative; background:linear-gradient(160deg,var(--bg1) 0%,var(--bg2) 100%); border-radius:20px; box-shadow:0 24px 64px rgba(0,0,0,.8),0 8px 24px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.07); width:204px; border:1px solid rgba(255,255,255,.08); transition:border-color .5s,box-shadow .5s,opacity 0.35s ease; overflow:hidden; }
     .w.work  { border-color:rgb(from var(--cw) r g b/.35); box-shadow:0 24px 64px rgba(0,0,0,.8),0 8px 24px rgba(0,0,0,.5),0 0 48px rgb(from var(--cw) r g b/.1),inset 0 1px 0 rgba(255,255,255,.07); }
     .w.break { border-color:rgb(from var(--cb) r g b/.35); box-shadow:0 24px 64px rgba(0,0,0,.8),0 8px 24px rgba(0,0,0,.5),0 0 48px rgb(from var(--cb) r g b/.1),inset 0 1px 0 rgba(255,255,255,.07); }
@@ -183,8 +183,8 @@
     .s-tabs { display:flex; border-bottom:1px solid rgba(255,255,255,.06); margin-bottom:2px; }
     .s-tab { flex:1; padding:7px 2px 8px; font-size:9px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:rgba(255,255,255,.25); background:none; border:none; border-bottom:2px solid transparent; margin-bottom:-1px; cursor:pointer; transition:color .2s,border-color .2s; font-family:inherit; }
     .s-tab:hover { color:rgba(255,255,255,.55); }
-    .s-tab.active { color:var(--cw); border-bottom-color:var(--cw); }
-    .s-panel { display:flex; flex-direction:column; gap:10px; height:158px; overflow-y:auto; overflow-x:hidden; padding-right:2px; scrollbar-width:thin; scrollbar-color:rgba(255,255,255,.18) rgba(255,255,255,.03); }
+    .s-tab.active { color:var(--ca); border-bottom-color:var(--ca); }
+    .s-panel { display:flex; flex-direction:column; gap:10px; height:158px; overflow-y:auto; overflow-x:hidden; padding-right:2px; scrollbar-width:thin; scrollbar-color:rgba(255,255,255,.18) rgba(255,255,255,.03); overscroll-behavior:contain; }
     .s-panel::-webkit-scrollbar { width:2px; }
     .s-panel::-webkit-scrollbar-track { background:rgba(255,255,255,.03); border-radius:99px; }
     .s-panel::-webkit-scrollbar-thumb { background:rgba(255,255,255,.18); border-radius:99px; }
@@ -193,26 +193,24 @@
     .s-inp-wrap { display:flex; align-items:center; gap:5px; }
     .s-inp { background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.12); border-radius:8px; color:#fff; font-size:15px; font-weight:700; width:52px; text-align:center; padding:6px 4px; outline:none; font-family:inherit; -moz-appearance:textfield; transition:border-color .2s,box-shadow .2s; }
     .s-inp::-webkit-outer-spin-button,.s-inp::-webkit-inner-spin-button { -webkit-appearance:none; margin:0; }
-    .s-inp:focus { border-color:rgb(from var(--cw) r g b/.8); box-shadow:0 0 0 2px rgb(from var(--cw) r g b/.2); }
+    .s-inp:focus { border-color:rgb(from var(--ca) r g b/.8); box-shadow:0 0 0 2px rgb(from var(--ca) r g b/.2); }
     .s-unit { font-size:10px; color:rgba(255,255,255,.28); }
     .s-sep { height:1px; background:rgba(255,255,255,.06); }
-    .s-themes { display:flex; flex-direction:column; gap:6px; }
-    .s-themes-top { display:flex; align-items:center; justify-content:space-between; }
-    .s-swatches { display:flex; gap:8px; }
-    .swatch { width:20px; height:20px; border-radius:50%; cursor:pointer; border:2px solid transparent; transition:transform .15s,border-color .2s; flex-shrink:0; }
-    .swatch:hover { transform:scale(1.2); }
-    .swatch.active { border-color:rgba(255,255,255,.7); transform:scale(1.1); }
-    .swatch.t0 { background:linear-gradient(135deg,#ff6b6b,#4dd9ac); }
-    .swatch.t1 { background:linear-gradient(135deg,#60a5fa,#34d399); }
-    .swatch.t2 { background:linear-gradient(135deg,#fb923c,#fbbf24); }
-    .swatch.t3 { background:linear-gradient(135deg,#c084fc,#f472b6); }
-    .swatch.t4 { background:linear-gradient(135deg,#22c55e,#6ee7b7); }
-    .swatch.t5 { background:linear-gradient(135deg,#f43f5e,#fb923c); }
+    .s-long-wrap { display:flex; flex-direction:column; gap:0; }
+    .s-long-sub { margin-top:2px; margin-left:10px; padding-left:10px; border-left:2px solid rgba(255,255,255,.08); }
+    .s-section { display:flex; flex-direction:column; gap:7px; }
+    .s-section-hd { font-size:9px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:rgba(255,255,255,.2); padding-bottom:5px; border-bottom:1px solid rgba(255,255,255,.06); }
     .s-color-label { cursor:pointer; position:relative; display:flex; }
     .s-color-label input[type="color"] { position:absolute; opacity:0; width:1px; height:1px; overflow:hidden; }
-    .s-color-dot { width:18px; height:18px; border-radius:50%; border:2px solid rgba(255,255,255,.18); cursor:pointer; transition:transform .15s,border-color .2s; background:conic-gradient(#ff6b6b,#fbbf24,#4dd9ac,#60a5fa,#c084fc,#ff6b6b); flex-shrink:0; }
-    .s-color-dot:hover { transform:scale(1.2); border-color:rgba(255,255,255,.5); }
-    .s-color-dot.active { border-color:rgba(255,255,255,.7); transform:scale(1.1); }
+    .s-colors-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:5px; }
+    .s-color-cell { display:flex; flex-direction:column; align-items:center; gap:5px; padding:7px 4px 6px; background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.06); border-radius:10px; transition:background .15s,border-color .15s; }
+    .s-color-cell:hover { background:rgba(255,255,255,.07); border-color:rgba(255,255,255,.1); }
+    .s-color-chip { width:26px; height:26px; border-radius:50%; border:2px solid rgba(255,255,255,.15); cursor:pointer; transition:transform .15s,border-color .2s,box-shadow .2s; flex-shrink:0; }
+    .s-color-chip:hover { transform:scale(1.1); border-color:rgba(255,255,255,.4); }
+    .s-color-chip.active { border-color:rgba(255,255,255,.75); box-shadow:0 0 8px rgba(255,255,255,.2); transform:scale(1.06); }
+    .s-color-name { font-size:9px; color:rgba(255,255,255,.32); letter-spacing:.04em; }
+    .s-reset-col { background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.07); border-radius:6px; color:rgba(255,255,255,.28); font-size:9.5px; font-weight:600; padding:5px; cursor:pointer; transition:all .15s; font-family:inherit; width:100%; letter-spacing:.06em; }
+    .s-reset-col:hover { background:rgba(255,255,255,.09); color:rgba(255,255,255,.62); border-color:rgba(255,255,255,.14); }
     .s-br { width:22px; height:22px; padding:0; display:flex; align-items:center; justify-content:center; }
     .s-br[data-br="0"] { border-radius:3px; }
     .s-br[data-br="2"] { border-radius:50%; }
@@ -242,7 +240,6 @@
     .w.br2 .new-cyc { display:none; }
     .w.br2 .alarm-row { display:none; }
     .w.br2 .rating-bar { display:none; }
-    .w.br2 .credit { display:none; }
     /* All 3 action buttons visible, compact */
     .w.br2 .btns { padding:10px 0 0; gap:8px; }
     .w.br2 .btn { width:30px; height:30px; }
@@ -260,14 +257,14 @@
     .w.br2.sz0 .time { font-size:32px; letter-spacing:-1px; padding:2px 0 1px; }
     .w.br2.sz2 .time { font-size:54px; letter-spacing:-2px; padding:6px 0 4px; }
     .s-slider { -webkit-appearance:none; appearance:none; width:100%; height:3px; background:rgba(255,255,255,.1); border-radius:3px; outline:none; cursor:pointer; margin:0; }
-    .s-slider::-webkit-slider-thumb { -webkit-appearance:none; width:14px; height:14px; border-radius:50%; background:var(--cw); cursor:pointer; box-shadow:0 0 6px rgba(0,0,0,.5); }
-    .s-slider::-moz-range-thumb { width:14px; height:14px; border-radius:50%; background:var(--cw); cursor:pointer; border:none; }
+    .s-slider::-webkit-slider-thumb { -webkit-appearance:none; width:14px; height:14px; border-radius:50%; background:var(--ca); cursor:pointer; box-shadow:0 0 6px rgba(0,0,0,.5); }
+    .s-slider::-moz-range-thumb { width:14px; height:14px; border-radius:50%; background:var(--ca); cursor:pointer; border:none; }
     .s-opacity-row { display:flex; flex-direction:column; gap:4px; }
     .live-time { text-align:center; font-size:9.5px; color:rgba(255,255,255,.22); padding:2px 0 0; letter-spacing:.08em; font-variant-numeric:tabular-nums; }
     .s-sizes { display:flex; gap:4px; }
     .s-sz { background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.1); border-radius:7px; color:rgba(255,255,255,.38); font-size:10px; font-weight:700; width:28px; height:26px; cursor:pointer; transition:all .15s; font-family:inherit; letter-spacing:.05em; padding:0; }
     .s-sz:hover { background:rgba(255,255,255,.12); color:rgba(255,255,255,.75); }
-    .s-sz.active { background:rgb(from var(--cw) r g b/.18); border-color:rgb(from var(--cw) r g b/.5); color:var(--cw); }
+    .s-sz.active { background:rgb(from var(--ca) r g b/.18); border-color:rgb(from var(--ca) r g b/.5); color:var(--ca); }
     .s-bg-row { display:flex; align-items:center; gap:6px; }
     .s-file-btn { display:inline-flex; align-items:center; background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.12); border-radius:7px; color:rgba(255,255,255,.6); font-size:10px; font-weight:600; letter-spacing:.06em; padding:5px 9px; cursor:pointer; transition:all .15s; font-family:inherit; }
     .s-file-btn:hover { background:rgba(255,255,255,.14); color:#fff; }
@@ -277,9 +274,9 @@
     .s-stats { display:flex; flex-direction:column; gap:6px; }
     .s-stat { display:flex; justify-content:space-between; align-items:baseline; }
     .s-stat-l { font-size:11px; color:rgba(255,255,255,.38); }
-    .s-stat-v { font-size:12px; font-weight:700; color:var(--cw); font-variant-numeric:tabular-nums; }
-    .s-save { background:rgb(from var(--cw) r g b/.1); border:1px solid rgb(from var(--cw) r g b/.3); border-radius:8px; color:var(--cw); font-size:10px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; padding:6px; cursor:pointer; transition:all .15s; font-family:inherit; width:100%; }
-    .s-save:hover { background:rgb(from var(--cw) r g b/.26); box-shadow:0 0 18px rgb(from var(--cw) r g b/.2); }
+    .s-stat-v { font-size:12px; font-weight:700; color:var(--ca); font-variant-numeric:tabular-nums; }
+    .s-save { background:rgb(from var(--ca) r g b/.1); border:1px solid rgb(from var(--ca) r g b/.3); border-radius:8px; color:var(--ca); font-size:10px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; padding:6px; cursor:pointer; transition:all .15s; font-family:inherit; width:100%; }
+    .s-save:hover { background:rgb(from var(--ca) r g b/.26); box-shadow:0 0 18px rgb(from var(--ca) r g b/.2); }
     .s-save:active { transform:scale(.97); }
     @keyframes pop { 0%{transform:scale(1)} 40%{transform:scale(1.06)} 100%{transform:scale(1)} }
     .pop .time { animation:pop .4s cubic-bezier(.34,1.56,.64,1); }
@@ -287,9 +284,9 @@
     .s-blk-add { display:flex; gap:5px; }
     .s-blk-inp { flex:1; min-width:0; background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.12); border-radius:8px; color:#fff; font-size:11px; padding:6px 8px; outline:none; font-family:inherit; }
     .s-blk-inp::placeholder { color:rgba(255,255,255,.2); }
-    .s-blk-inp:focus { border-color:rgb(from var(--cw) r g b/.8); box-shadow:0 0 0 2px rgb(from var(--cw) r g b/.2); }
-    .s-blk-btn { background:rgb(from var(--cw) r g b/.14); border:1px solid rgb(from var(--cw) r g b/.4); border-radius:8px; color:var(--cw); font-size:18px; font-weight:700; width:30px; height:30px; cursor:pointer; font-family:inherit; display:flex; align-items:center; justify-content:center; flex-shrink:0; transition:all .15s; padding:0; }
-    .s-blk-btn:hover { background:rgb(from var(--cw) r g b/.26); }
+    .s-blk-inp:focus { border-color:rgb(from var(--ca) r g b/.8); box-shadow:0 0 0 2px rgb(from var(--ca) r g b/.2); }
+    .s-blk-btn { background:rgb(from var(--ca) r g b/.14); border:1px solid rgb(from var(--ca) r g b/.4); border-radius:8px; color:var(--ca); font-size:18px; font-weight:700; width:30px; height:30px; cursor:pointer; font-family:inherit; display:flex; align-items:center; justify-content:center; flex-shrink:0; transition:all .15s; padding:0; }
+    .s-blk-btn:hover { background:rgb(from var(--ca) r g b/.26); }
     .s-blk-list { display:flex; flex-direction:column; gap:4px; max-height:80px; overflow-y:auto; }
     .s-blk-item { display:flex; align-items:center; gap:6px; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.07); border-radius:6px; padding:5px 8px; }
     .s-blk-url { font-size:10px; color:rgba(255,255,255,.6); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; flex:1; }
@@ -310,12 +307,12 @@
     .alarm-sw input { display:none; }
     .alarm-trk { position:absolute; inset:0; background:rgba(255,255,255,.1); border-radius:9px; cursor:pointer; transition:background .25s; border:1px solid rgba(255,255,255,.08); }
     .alarm-trk::before { content:""; position:absolute; width:14px; height:14px; left:1px; top:1px; background:rgba(255,255,255,.4); border-radius:50%; transition:transform .25s,background .25s; box-shadow:0 1px 3px rgba(0,0,0,.4); }
-    .alarm-sw input:checked + .alarm-trk { background:rgb(from var(--cw) r g b/.5); border-color:rgb(from var(--cw) r g b/.4); }
+    .alarm-sw input:checked + .alarm-trk { background:rgb(from var(--ca) r g b/.5); border-color:rgb(from var(--ca) r g b/.4); }
     .alarm-sw input:checked + .alarm-trk::before { transform:translateX(14px); background:#fff; }
   `;
 
   var WIDGET_HTML = `
-    <div class="w work t0" id="w">
+    <div class="w work" id="w">
       <div id="bgol"></div>
       <div class="hdr" id="hdr">
         <div class="badge"><div class="dot"></div><span id="lbl">TRABAJO</span></div>
@@ -351,19 +348,34 @@
           <div class="s-sep"></div>
           <div class="s-row"><span class="s-lbl" id="s-work-lbl">Trabajo</span><div class="s-inp-wrap"><input class="s-inp" id="s-work" type="number" min="1" max="99" value="25"><span class="s-unit">min</span></div></div>
           <div class="s-row"><span class="s-lbl" id="s-break-lbl">Descanso</span><div class="s-inp-wrap"><input class="s-inp" id="s-break" type="number" min="1" max="99" value="5"><span class="s-unit">min</span></div></div>
-          <div class="s-row"><span class="s-lbl" id="s-long-lbl">Desc. largo</span><label class="alarm-sw"><input type="checkbox" id="s-long-chk"><div class="alarm-trk"></div></label></div>
-          <div class="s-row" id="s-long-row" style="display:none"><span class="s-lbl" id="s-long-dur-lbl">Duración</span><div class="s-inp-wrap"><input class="s-inp" id="s-long-dur" type="number" min="5" max="60" value="15"><span class="s-unit">min</span></div></div>
+          <div class="s-long-wrap">
+            <div class="s-row"><span class="s-lbl" id="s-long-lbl">Desc. largo</span><label class="alarm-sw"><input type="checkbox" id="s-long-chk"><div class="alarm-trk"></div></label></div>
+            <div class="s-row s-long-sub" id="s-long-row" style="display:none"><span class="s-lbl" id="s-long-dur-lbl">Duración</span><div class="s-inp-wrap"><input class="s-inp" id="s-long-dur" type="number" min="5" max="60" value="15"><span class="s-unit">min</span></div></div>
+          </div>
         </div>
         <div class="s-panel" id="s-panel-appearance" style="display:none">
-          <div class="s-themes"><div class="s-themes-top"><span class="s-lbl" id="s-theme-lbl">Tema</span><label class="s-color-label" title="Custom"><input type="color" id="s-accent" value="#ff6b6b"><div class="s-color-dot" id="s-color-dot"></div></label></div><div class="s-swatches"><div class="swatch t0 active" data-t="0"></div><div class="swatch t1" data-t="1"></div><div class="swatch t2" data-t="2"></div><div class="swatch t3" data-t="3"></div><div class="swatch t4" data-t="4"></div><div class="swatch t5" data-t="5"></div></div></div>
-          <div class="s-row"><span class="s-lbl" id="s-size-lbl">Tamaño</span><div class="s-sizes"><button class="s-sz" data-sz="0">S</button><button class="s-sz active" data-sz="1">M</button><button class="s-sz" data-sz="2">L</button></div></div>
-          <div class="s-row"><span class="s-lbl" id="s-radius-lbl">Bordes</span><div class="s-sizes"><button class="s-sz s-br" data-br="0"></button><button class="s-sz s-br active" data-br="1"></button><button class="s-sz s-br" data-br="2"></button></div></div>
-          <div class="s-opacity-row"><div class="s-row"><span class="s-lbl" id="s-opacity-lbl">Opacidad</span><span class="s-stat-v" id="s-opacity-val">100%</span></div><input type="range" class="s-slider" id="s-opacity" min="0" max="100" value="100" step="5"></div>
-          <div class="s-row"><span class="s-lbl" id="s-clock-lbl">Reloj</span><div class="s-sizes"><button class="s-sz s-fmt active" data-fmt="off">—</button><button class="s-sz s-fmt" data-fmt="24">24h</button><button class="s-sz s-fmt" data-fmt="12">12h</button></div></div>
-          <div class="s-sep"></div>
-          <div class="s-row"><span class="s-lbl" id="s-show-sess-lbl">Info sesión</span><label class="alarm-sw"><input type="checkbox" id="s-show-sess" checked><div class="alarm-trk"></div></label></div>
-          <div class="s-row"><span class="s-lbl" id="s-bg-lbl">Fondo</span><div class="s-bg-row"><label class="s-file-btn" id="s-file-label"><span id="s-file-label-txt">Elegir imagen</span><input type="file" id="s-file" accept="image/*" style="display:none"></label><button class="s-clear-btn" id="s-clear-bg" style="display:none">Quitar</button></div></div>
-          <div id="s-thumb"></div>
+          <div class="s-section">
+            <div class="s-section-hd" id="s-sec-colors-lbl">Colores</div>
+            <div class="s-colors-grid">
+              <div class="s-color-cell"><label class="s-color-label"><input type="color" id="s-menu-color" value="#ff6b6b"><div class="s-color-chip" id="s-menu-chip"></div></label><span class="s-color-name" id="s-menu-color-lbl">Menú</span></div>
+              <div class="s-color-cell"><label class="s-color-label"><input type="color" id="s-work-color" value="#ff6b6b"><div class="s-color-chip" id="s-work-chip"></div></label><span class="s-color-name" id="s-work-color-lbl">Trabajo</span></div>
+              <div class="s-color-cell"><label class="s-color-label"><input type="color" id="s-break-color" value="#4dd9ac"><div class="s-color-chip" id="s-break-chip"></div></label><span class="s-color-name" id="s-break-color-lbl">Descanso</span></div>
+            </div>
+            <button class="s-reset-col" id="s-reset-colors">↺ Reset</button>
+          </div>
+          <div class="s-section">
+            <div class="s-section-hd" id="s-sec-widget-lbl">Widget</div>
+            <div class="s-row"><span class="s-lbl" id="s-size-lbl">Tamaño</span><div class="s-sizes"><button class="s-sz" data-sz="0">S</button><button class="s-sz active" data-sz="1">M</button><button class="s-sz" data-sz="2">L</button></div></div>
+            <div class="s-row"><span class="s-lbl" id="s-radius-lbl">Bordes</span><div class="s-sizes"><button class="s-sz s-br" data-br="0"></button><button class="s-sz s-br active" data-br="1"></button><button class="s-sz s-br" data-br="2"></button></div></div>
+            <div class="s-opacity-row"><div class="s-row"><span class="s-lbl" id="s-opacity-lbl">Opacidad</span><span class="s-stat-v" id="s-opacity-val">100%</span></div><input type="range" class="s-slider" id="s-opacity" min="0" max="100" value="100" step="5"></div>
+          </div>
+          <div class="s-section">
+            <div class="s-section-hd" id="s-sec-display-lbl">Pantalla</div>
+            <div class="s-row"><span class="s-lbl" id="s-clock-lbl">Reloj</span><div class="s-sizes"><button class="s-sz s-fmt active" data-fmt="off">—</button><button class="s-sz s-fmt" data-fmt="24">24h</button><button class="s-sz s-fmt" data-fmt="12">12h</button></div></div>
+            <div class="s-row"><span class="s-lbl" id="s-show-sess-lbl">Info sesión</span><label class="alarm-sw"><input type="checkbox" id="s-show-sess" checked><div class="alarm-trk"></div></label></div>
+            <div class="s-row"><span class="s-lbl" id="s-bg-lbl">Fondo</span><div class="s-bg-row"><label class="s-file-btn" id="s-file-label"><span id="s-file-label-txt">Elegir imagen</span><input type="file" id="s-file" accept="image/*" style="display:none"></label><button class="s-clear-btn" id="s-clear-bg" style="display:none">Quitar</button></div></div>
+            <div id="s-thumb"></div>
+          </div>
         </div>
         <div class="s-panel" id="s-panel-stats" style="display:none">
           <div class="s-stats"><div class="s-stat"><span class="s-stat-l" id="s-today-lbl">Hoy</span><span class="s-stat-v" id="s-today">—</span></div><div class="s-stat"><span class="s-stat-l" id="s-week-lbl">Semana</span><span class="s-stat-v" id="s-week">—</span></div><div class="s-stat"><span class="s-stat-l" id="s-month-lbl">Mes</span><span class="s-stat-v" id="s-month">—</span></div></div>
@@ -402,7 +414,6 @@
   var sFile   = shadow.getElementById('s-file');
   var sClearBg= shadow.getElementById('s-clear-bg');
   var sThumb  = shadow.getElementById('s-thumb');
-  var swatches= shadow.querySelectorAll('.swatch');
   var sLangEs  = shadow.getElementById('s-lang-es');
   var sLangEn  = shadow.getElementById('s-lang-en');
   var alarmChk = shadow.getElementById('alarm-chk');
@@ -422,8 +433,13 @@
   var sBrBtns     = shadow.querySelectorAll('.s-br');
   var sFmtBtns    = shadow.querySelectorAll('.s-fmt');
   var sShowSess   = shadow.getElementById('s-show-sess');
-  var sAccent     = shadow.getElementById('s-accent');
-  var sColorDot   = shadow.getElementById('s-color-dot');
+  var sMenuColor  = shadow.getElementById('s-menu-color');
+  var sWorkColor  = shadow.getElementById('s-work-color');
+  var sBreakColor = shadow.getElementById('s-break-color');
+  var sMenuChip   = shadow.getElementById('s-menu-chip');
+  var sWorkChip   = shadow.getElementById('s-work-chip');
+  var sBreakChip  = shadow.getElementById('s-break-chip');
+  var sResetColors = shadow.getElementById('s-reset-colors');
   var clock       = shadow.getElementById('clock');
 
   // ── Utilidades ─────────────────────────────────────────────────────────────
@@ -502,22 +518,30 @@
     } catch(e) {}
   }
 
-  // ── Temas ──────────────────────────────────────────────────────────────────
-  function applyTheme(idx) {
-    currentTheme = idx;
-    customAccent = null;
+  // ── Colores ────────────────────────────────────────────────────────────────
+  function initChipDefaults() {
+    if (!customMenu)  { sMenuChip.style.background  = DEFAULTS.cw; }
+    if (!customWork)  { sWorkChip.style.background   = DEFAULTS.cw; }
+    if (!customBreak) { sBreakChip.style.background  = DEFAULTS.cb; }
+  }
+  function resetColors() {
+    customMenu = customWork = customBreak = null;
+    w.style.removeProperty('--ca');
     w.style.removeProperty('--cw');
     w.style.removeProperty('--cb');
-    w.className = 'w ' + mode + (isRunning ? ' run' : '') + ' t' + idx + ' sz' + currentSize + ' br' + currentRadius + (settVisible ? ' sett-open' : '');
-    swatches.forEach(function(s) { s.classList.toggle('active', parseInt(s.dataset.t) === idx); });
-    sColorDot.style.background = '';
-    sColorDot.classList.remove('active');
+    sMenuChip.style.background  = DEFAULTS.cw;
+    sWorkChip.style.background  = DEFAULTS.cw;
+    sBreakChip.style.background = DEFAULTS.cb;
+    sMenuChip.classList.remove('active');
+    sWorkChip.classList.remove('active');
+    sBreakChip.classList.remove('active');
+    saveSettings();
   }
 
   var szBtns = shadow.querySelectorAll('.s-sz[data-sz]');
   function applySize(sz) {
     currentSize = sz;
-    w.className = 'w ' + mode + (isRunning ? ' run' : '') + ' t' + currentTheme + ' sz' + sz + ' br' + currentRadius + (settVisible ? ' sett-open' : '');
+    w.className = 'w ' + mode + (isRunning ? ' run' : '') + ' sz' + sz + ' br' + currentRadius + (settVisible ? ' sett-open' : '');
     szBtns.forEach(function(b) { b.classList.toggle('active', parseInt(b.dataset.sz) === sz); });
   }
 
@@ -533,8 +557,14 @@
     shadow.getElementById('s-lang-lbl').textContent       = T('language');
     shadow.getElementById('s-work-lbl').textContent       = T('workLbl');
     shadow.getElementById('s-break-lbl').textContent      = T('breakLbl');
-    shadow.getElementById('s-theme-lbl').textContent      = T('theme');
-    shadow.getElementById('s-size-lbl').textContent       = T('size');
+    shadow.getElementById('s-sec-colors-lbl').textContent  = T('secColors');
+    shadow.getElementById('s-sec-widget-lbl').textContent  = T('secWidget');
+    shadow.getElementById('s-sec-display-lbl').textContent = T('secDisplay');
+    shadow.getElementById('s-menu-color-lbl').textContent  = T('colorMenu');
+    shadow.getElementById('s-work-color-lbl').textContent  = T('colorWork');
+    shadow.getElementById('s-break-color-lbl').textContent = T('colorBreak');
+    shadow.getElementById('s-reset-colors').textContent    = T('resetColors');
+    shadow.getElementById('s-size-lbl').textContent        = T('size');
     shadow.getElementById('s-bg-lbl').textContent         = T('bg');
     shadow.getElementById('s-file-label-txt').textContent = T('chooseImg');
     sClearBg.textContent                                  = T('removeImg');
@@ -598,20 +628,21 @@
     inf.style.display = show ? '' : 'none';
     sShowSess.checked = show;
   }
-  function applyAccent(color) {
-    customAccent = color;
-    if (color) {
-      w.style.setProperty('--cw', color);
-      w.style.setProperty('--cb', 'color-mix(in srgb, ' + color + ', #fff 30%)');
-      sColorDot.style.background = color;
-      sColorDot.classList.add('active');
-      swatches.forEach(function(s) { s.classList.remove('active'); });
-    } else {
-      w.style.removeProperty('--cw');
-      w.style.removeProperty('--cb');
-      sColorDot.style.background = '';
-      sColorDot.classList.remove('active');
+  function applyCustomColor(role, color) {
+    if (role === 'menu') {
+      customMenu = color;
+      if (color) { w.style.setProperty('--ca', color); sMenuChip.style.background = color; sMenuChip.classList.add('active'); }
+      else { w.style.removeProperty('--ca'); sMenuChip.style.background = DEFAULTS.cw; sMenuChip.classList.remove('active'); }
+    } else if (role === 'work') {
+      customWork = color;
+      if (color) { w.style.setProperty('--cw', color); sWorkChip.style.background = color; sWorkChip.classList.add('active'); }
+      else { w.style.removeProperty('--cw'); sWorkChip.style.background = DEFAULTS.cw; sWorkChip.classList.remove('active'); }
+    } else if (role === 'break') {
+      customBreak = color;
+      if (color) { w.style.setProperty('--cb', color); sBreakChip.style.background = color; sBreakChip.classList.add('active'); }
+      else { w.style.removeProperty('--cb'); sBreakChip.style.background = DEFAULTS.cb; sBreakChip.classList.remove('active'); }
     }
+    saveSettings();
   }
 
   // ── Imagen de fondo ────────────────────────────────────────────────────────
@@ -702,7 +733,7 @@
     var tl = calcTimeLeft();
     t.textContent   = fmt(tl);
     bar.style.width = (tl / totalFor(mode) * 100) + '%';
-    w.className     = 'w ' + mode + (isRunning ? ' run' : '') + ' t' + currentTheme + ' sz' + currentSize + ' br' + currentRadius + (settVisible ? ' sett-open' : '');
+    w.className     = 'w ' + mode + (isRunning ? ' run' : '') + ' sz' + currentSize + ' br' + currentRadius + (settVisible ? ' sett-open' : '');
     lbl.textContent = mode === 'work' ? T('work') : (isLongBreak ? T('longBreak') : T('brk'));
     pi.style.display  = isRunning ? 'none'  : 'block';
     pai.style.display = isRunning ? 'block' : 'none';
@@ -739,12 +770,12 @@
   function saveSettings() {
     chrome.storage.local.set({ pomoSettings: {
       work: Math.round(WORK / 60), break: Math.round(BREAK / 60),
-      theme: currentTheme, size: currentSize, lang: lang,
+      size: currentSize, lang: lang,
       alarm: alarmEnabled, longBreak: longBreakEnabled,
       longBreakDur: Math.round(LONG_BREAK / 60),
       opacity: currentOpacity, radius: currentRadius,
       clockFmt: clockFmt, showSess: showSessionInfo,
-      accent: customAccent
+      accentMenu: customMenu, accentWork: customWork, accentBreak: customBreak
     }});
   }
 
@@ -789,8 +820,9 @@
     sOpacity.value = currentOpacity;
     sOpacityVal.textContent = currentOpacity + '%';
     sShowSess.checked = showSessionInfo;
-    if (customAccent) { sAccent.value = customAccent; sColorDot.style.background = customAccent; sColorDot.classList.add('active'); }
-    else { sColorDot.style.background = ''; sColorDot.classList.remove('active'); }
+    if (customMenu)  { sMenuColor.value  = customMenu;  }
+    if (customWork)  { sWorkColor.value  = customWork;  }
+    if (customBreak) { sBreakColor.value = customBreak; }
     if (currentBg) { sThumb.style.display = 'block'; sClearBg.style.display = ''; }
     main.style.display = 'none';
     sett.style.display = '';
@@ -838,13 +870,6 @@
     chrome.storage.local.set({ pomoRatingDismissed: true });
   });
 
-  swatches.forEach(function(sw) {
-    sw.addEventListener('click', function(e) {
-      e.stopPropagation();
-      applyTheme(parseInt(sw.dataset.t));
-      saveSettings();
-    });
-  });
 
   szBtns.forEach(function(b) {
     b.addEventListener('click', function(e) {
@@ -933,10 +958,14 @@
     saveSettings();
   });
 
-  sAccent.addEventListener('input', function(e) {
+  ['input','change'].forEach(function(ev) {
+    sMenuColor.addEventListener(ev, function(e) { e.stopPropagation(); applyCustomColor('menu', sMenuColor.value); });
+    sWorkColor.addEventListener(ev, function(e) { e.stopPropagation(); applyCustomColor('work', sWorkColor.value); });
+    sBreakColor.addEventListener(ev, function(e) { e.stopPropagation(); applyCustomColor('break', sBreakColor.value); });
+  });
+  sResetColors.addEventListener('click', function(e) {
     e.stopPropagation();
-    applyAccent(sAccent.value);
-    saveSettings();
+    resetColors();
   });
 
   sSave.addEventListener('click', function(e) {
@@ -959,7 +988,6 @@
     if (data.pomoSettings) {
       WORK  = (data.pomoSettings.work  || 25) * 60;
       BREAK = (data.pomoSettings.break || 5)  * 60;
-      currentTheme = data.pomoSettings.theme || 0;
       currentSize  = data.pomoSettings.size  != null ? data.pomoSettings.size : 1;
       if (data.pomoSettings.lang) lang = data.pomoSettings.lang;
       if (data.pomoSettings.alarm != null) { alarmEnabled = data.pomoSettings.alarm; alarmChk.checked = alarmEnabled; }
@@ -969,7 +997,10 @@
       if (data.pomoSettings.radius  != null) applyRadius(data.pomoSettings.radius);
       if (data.pomoSettings.clockFmt)        applyClockFmt(data.pomoSettings.clockFmt);
       if (data.pomoSettings.showSess != null) applyShowSess(data.pomoSettings.showSess);
-      if (data.pomoSettings.accent)           applyAccent(data.pomoSettings.accent);
+      if (data.pomoSettings.accentWork)        applyCustomColor('work', data.pomoSettings.accentWork);
+      else if (data.pomoSettings.accent)       applyCustomColor('work', data.pomoSettings.accent);
+      if (data.pomoSettings.accentMenu)        applyCustomColor('menu', data.pomoSettings.accentMenu);
+      if (data.pomoSettings.accentBreak)       applyCustomColor('break', data.pomoSettings.accentBreak);
     }
     loadState(data.pomoState);
     if (data.pomoBg) applyBg(data.pomoBg);
@@ -977,7 +1008,7 @@
     if (data.pomoBlacklist) blacklist = data.pomoBlacklist;
     if (data.pomoRatingDismissed) ratingDismissed = true;
     ratingCta.href = STORE_URL;
-    applyTheme(currentTheme);
+    initChipDefaults();
     render();
     if (data.pomoVisible === true) host.style.display = '';
   });
@@ -1008,13 +1039,17 @@
         if (s.alarm != null) { alarmEnabled = s.alarm; alarmChk.checked = alarmEnabled; }
         if (s.longBreak != null) longBreakEnabled = s.longBreak;
         if (s.longBreakDur) LONG_BREAK = s.longBreakDur * 60;
-        applyTheme(s.theme||0); applySize(currentSize); render();
+        applySize(currentSize); render();
         if (s.opacity != null) applyOpacity(s.opacity);
         if (s.radius  != null) applyRadius(s.radius);
         if (s.clockFmt)        applyClockFmt(s.clockFmt);
         if (s.showSess != null) applyShowSess(s.showSess);
-        if (s.accent)          applyAccent(s.accent);
-        else if ('accent' in s && !s.accent) applyAccent(null);
+        if (s.accentWork)       applyCustomColor('work', s.accentWork);
+        else if ('accentWork' in s && !s.accentWork) applyCustomColor('work', null);
+        if (s.accentMenu)       applyCustomColor('menu', s.accentMenu);
+        else if ('accentMenu' in s && !s.accentMenu) applyCustomColor('menu', null);
+        if (s.accentBreak)      applyCustomColor('break', s.accentBreak);
+        else if ('accentBreak' in s && !s.accentBreak) applyCustomColor('break', null);
       }
     }
   });
@@ -1109,7 +1144,7 @@
     var r  = host.getBoundingClientRect();
     var dx = Math.max(0, Math.max(r.left - e.clientX, e.clientX - r.right));
     var dy = Math.max(0, Math.max(r.top  - e.clientY, e.clientY - r.bottom));
-    var idle = Math.sqrt(dx * dx + dy * dy) > 80;
+    var idle = dx > 0 || dy > 0;
     if (idle !== currentlyIdle) { currentlyIdle = idle; refreshOpacity(); }
   });
 
@@ -1122,4 +1157,14 @@
     drag = false;
     snapToCorner();
   });
+
+  host.addEventListener('wheel', function(e) {
+    if (sett.style.display === 'none') return;
+    e.preventDefault();
+    e.stopPropagation();
+    var active = Array.from(shadow.querySelectorAll('.s-panel')).find(function(p) {
+      return p.style.display !== 'none';
+    });
+    if (active) active.scrollTop += e.deltaMode === 0 ? e.deltaY : e.deltaY * 30;
+  }, { passive: false });
 })();

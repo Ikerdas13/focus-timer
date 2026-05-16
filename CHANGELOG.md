@@ -6,21 +6,35 @@ Formato: [Unreleased] acumula cambios en desarrollo. Al publicar, renómbralo co
 
 ## [Unreleased]
 
-_Cambios desde v1.2.0 — aún no publicados_
+_Cambios desde v1.3.0 — aún no publicados_
 
 ### Added
-- 2 nuevos temas: Forest (verde) y Ember (rosa→naranja), total 6 temas
-- Color de acento personalizado (color picker) — sobreescribe los colores del tema
-- Slider de opacidad del widget (30–100%), respeta el fade de proximidad proporcionalmente
-- Toggle de bordes: sharp / rounded / pill
+### Fixed
+### Changed
+### Removed
+
+---
+
+## [1.3.0] — 2026-05-16
+
+### Added
+- 3 color pickers independientes: Menú (acento UI), Trabajo y Descanso
+- Botón Reset que restaura los colores por defecto (rojo trabajo, azul descanso)
+- Slider de opacidad del widget (0% = 50% real, 100% = 100%)
+- Toggle de bordes: sharp / rounded / pill (círculo)
 - Reloj en tiempo real con formato 12h / 24h / desactivado
 - Toggle para mostrar/ocultar la info de sesión
-
-### Fixed
+- "Designed by Iker G." visible en modo círculo para todos los tamaños
 
 ### Changed
+- Panel Aspecto reorganizado en secciones: Colores · Widget · Pantalla
+- Sistema de temas eliminado — colores únicos configurables libremente
+- Opción "Duración" del descanso largo aparece visualmente anidada bajo su toggle
+- Detección de ratón exacta al píxel (eliminada zona de tolerancia de 80 px)
 
-### Removed
+### Fixed
+- El scroll del panel de ajustes ya no se propaga a la página al llegar al final
+- Flash de 1 ms al abrir Chrome corregido
 
 ---
 
